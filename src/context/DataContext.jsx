@@ -7,13 +7,17 @@ export const DataProvider = ({children}) => {
     
     const fetchAllProducts = async() => {
         try {
-            const res = await axios.get()
+            const res = await axios.get('https://dummyjson.com/products');
+            console.log(res);
+            const productsData = res.data.products;
+            setData(productsData)
         } catch (error) {
             console.error(error);
         }
     }
 
-    return <DataContext.Provider value={{data, setData}}>
+    return <DataContext.Provider value={{data, setData, fetchAllProducts}}>
         {children}
     </DataContext.Provider>
 }
+

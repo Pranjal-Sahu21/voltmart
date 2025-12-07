@@ -131,7 +131,7 @@ const Navbar = ({ location }) => {
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-black font-semibold border-b-2 border-black pb-1"
+                      ? "text-black font-semibold pb-1"
                       : "text-gray-700 hover:text-black transition border-b-2 border-transparent pb-1"
                   }
                 >

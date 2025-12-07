@@ -4,7 +4,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Category from "./Category";
-import ParallaxBanner from "./ParallaxBanner";
 
 const NextArrow = ({ onClick }) => (
   <div
@@ -108,9 +107,6 @@ const Carousel = () => {
       <div className="hidden border-t border-gray-100 md:block">
         <Category />
       </div>
-
-      {/* Parallax Section */}
-      {/* <ParallaxBanner /> */}
     </div>
   );
 };

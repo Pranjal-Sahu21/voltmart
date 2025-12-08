@@ -120,7 +120,6 @@ const Carousel = () => {
               ))}
             </Slider>
           </div>
-          {/* CATEGORY */}
           {showExtras && (
             <div className="hidden md:block border-t border-gray-100">
               <Category />

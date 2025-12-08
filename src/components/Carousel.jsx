@@ -1,49 +1,66 @@
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useData } from "../context/DataContext";
 import Category from "./Category";
+import VoltMartParallax from "./VoltmartParallax";
+
+const isValidImage = (url) => {
+  if (!url) return false;
+  return (
+    typeof url === "string" &&
+    url.startsWith("http") &&
+    !url.includes("undefined") &&
+    !url.includes("null")
+  );
+};
 
 const NextArrow = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="flex absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white p-2 rounded-full cursor-pointer shadow-md transition-all"
+    className="flex absolute right-1 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow cursor-pointer"
   >
-    <ChevronRight className="text-gray-700" size={18} />
+    <ChevronRight size={18} className="text-gray-700" />
   </div>
 );
 
 const PrevArrow = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="flex absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white p-2 rounded-full cursor-pointer shadow-md transition-all"
+    className="flex absolute left-1 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow cursor-pointer"
   >
-    <ChevronLeft className="text-gray-700" size={18} />
+    <ChevronLeft size={18} className="text-gray-700" />
   </div>
 );
 
 const Carousel = () => {
-  const [data, setData] = useState([]);
+  const { data, fetchAllProducts } = useData();
   const [randomItems, setRandomItems] = useState([]);
+  const [showExtras, setShowExtras] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("https://api.escuelajs.co/api/v1/products");
-        const json = await res.json();
-        setData(json);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
+    const loadData = async () => {
+      await fetchAllProducts();
     };
-    fetchProducts();
+    loadData();
   }, []);
 
   useEffect(() => {
     if (data.length) {
-      const shuffled = [...data].sort(() => 0.5 - Math.random());
+      const cleaned = data.filter(
+        (item) => Array.isArray(item.images) && isValidImage(item.images[0])
+      );
+
+      const shuffled = [...cleaned].sort(() => 0.5 - Math.random());
       setRandomItems(shuffled.slice(0, 7));
+
+      const timer = setTimeout(() => {
+        setShowExtras(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
     }
   }, [data]);
 
@@ -54,6 +71,7 @@ const Carousel = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
+    pauseOnHover: false,
     autoplaySpeed: 4500,
     arrows: true,
     nextArrow: <NextArrow />,
@@ -62,51 +80,57 @@ const Carousel = () => {
 
   return (
     <div className="w-full bg-gray-50">
-      {/* Slider */}
-      <div className="max-w-7xl mx-auto py-6 sm:py-10">
-        <Slider {...settings}>
-          {randomItems.map((item) => (
-            <div key={item.id} className="px-3">
-              <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center p-6 sm:p-10">
-                  {/* Text */}
-                  <div className="space-y-4 text-center md:text-left">
-                    <span className="inline-block text-xs font-medium text-gray-400 tracking-widest uppercase">
-                      Featured Product
-                    </span>
+      <div className="w-full min-h-screen flex flex-col">
+        {/* Carousel */}
+        <div className="grow">
+          <div className="max-w-7xl mx-auto py-6 sm:py-10 h-full">
+            <Slider {...settings}>
+              {randomItems.map((item) => (
+                <div key={item.id} className="px-3 h-full">
+                  <div className="bg-white rounded-3xl shadow-sm overflow-hidden h-full flex">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center p-6 sm:p-10 w-full">
+                      <div className="space-y-4 text-center md:text-left">
+                        <span className="text-xs font-medium text-gray-400 uppercase">
+                          Featured Product
+                        </span>
 
-                    <h1 className="text-2xl sm:text-4xl font-semibold text-gray-900 leading-tight line-clamp-2">
-                      {item.title}
-                    </h1>
+                        <h1 className="text-2xl sm:text-4xl font-semibold text-gray-900 leading-snug">
+                          {item.title}
+                        </h1>
 
-                    <p className="text-sm sm:text-base text-gray-500 line-clamp-2">
-                      {item.description}
-                    </p>
+                        <p className="text-gray-500 text-sm sm:text-base leading-snug line-clamp-2">
+                          {item.description}
+                        </p>
 
-                    <button className="mt-2 bg-black text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-900 transition active:scale-95">
-                      Shop Now
-                    </button>
-                  </div>
+                        <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-all cursor-pointer">
+                          Shop Now
+                        </button>
+                      </div>
 
-                  {/* Image */}
-                  <div className="flex justify-center items-center">
-                    <img
-                      src={item.images?.[0] || "/fallback.png"}
-                      alt={item.title}
-                      className="max-h-[260px] sm:max-h-[340px] w-auto object-contain transition-transform duration-300 hover:scale-105"
-                    />
+                      <div className="flex justify-center items-center">
+                        <img
+                          src={item.images[0]}
+                          alt={item.title}
+                          className="max-h-[260px] sm:max-h-[340px] w-auto object-contain hover:scale-105 duration-300"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
+            </Slider>
+          </div>
+          {/* CATEGORY */}
+          {showExtras && (
+            <div className="hidden md:block border-t border-gray-100">
+              <Category />
             </div>
-          ))}
-        </Slider>
+          )}
+        </div>
       </div>
 
-      {/* Categories */}
-      <div className="hidden border-t border-gray-100 md:block">
-        <Category />
-      </div>
+      {/* PARALLAX */}
+      {showExtras && <VoltMartParallax />}
     </div>
   );
 };

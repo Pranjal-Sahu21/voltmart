@@ -5,13 +5,14 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { MapPin, Menu, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-const Navbar = ({ location }) => {
+const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [location, setLocation] = useState(null);
 
   const links = [
     { path: "/", label: "Home" },
@@ -19,6 +20,37 @@ const Navbar = ({ location }) => {
     { path: "/about", label: "About" },
     { path: "/contact", label: "Contact" },
   ];
+
+  useEffect(() => {
+    const fetchLocation = async (lat, lon) => {
+      const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+        );
+        const data = await res.json();
+        if (data && data.name && data.sys) {
+          setLocation({
+            city: data.name,
+            state: data.sys.country,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch location:", err);
+      }
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          fetchLocation(pos.coords.latitude, pos.coords.longitude);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+        }
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -54,7 +86,7 @@ const Navbar = ({ location }) => {
               <MapPin size={16} />
               <span>
                 {location
-                  ? `${location?.county}, ${location?.state}`
+                  ? `${location.city}, ${location.state}`
                   : "Set location"}
               </span>
             </div>
@@ -119,7 +151,7 @@ const Navbar = ({ location }) => {
               <div className="flex items-center gap-2 text-gray-600 text-sm border-b pb-4">
                 <MapPin size={16} />
                 {location
-                  ? `${location.county}, ${location.state}`
+                  ? `${location.city}, ${location.state}`
                   : "Set location"}
               </div>
 

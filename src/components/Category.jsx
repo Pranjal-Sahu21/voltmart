@@ -31,7 +31,7 @@ const Category = () => {
         {categoryOnlyData?.map((item, index) => (
           <button
             key={index}
-            className="uppercase text-xs sm:text-sm tracking-wide font-medium text-gray-700 bg-gray-100 px-5 py-2.5 rounded-full border border-transparent hover:border-gray-300 hover:bg-white hover:text-gray-900 transition-all duration-200 shadow-sm active:scale-95"
+            className="uppercase text-xs sm:text-sm tracking-wide font-medium text-gray-700 bg-gray-100 px-5 py-2.5 rounded-full border border-transparent hover:border-gray-300 hover:bg-white hover:text-gray-900 transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
           >
             {item}
           </button>

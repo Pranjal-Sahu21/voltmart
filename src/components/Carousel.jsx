@@ -129,7 +129,6 @@ const Carousel = () => {
         </div>
       </div>
 
-      {/* PARALLAX */}
       {showExtras && <VoltMartParallax />}
     </div>
   );

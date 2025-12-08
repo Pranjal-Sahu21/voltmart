@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import parallaxImg from "../assets/parallax-img.jpg";
 
-const VoltMartParallax = () => {
+const VoltmartParallax = () => {
   const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [containerTop, setContainerTop] = useState(0);
@@ -93,4 +93,4 @@ const VoltMartParallax = () => {
   );
 };
 
-export default VoltMartParallax;
+export default VoltmartParallax;

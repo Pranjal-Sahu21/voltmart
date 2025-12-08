@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import parallaxImg from "../assets/parallax-img.jpg";
+import { Link } from "react-router-dom";
 
-const VoltmartParallax = () => {
+const ParallaxComponent = () => {
   const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [containerTop, setContainerTop] = useState(0);
@@ -80,17 +81,19 @@ const VoltmartParallax = () => {
         <h1 className="text-white text-4xl sm:text-6xl font-semibold drop-shadow-xl">
           Experience Premium Quality
         </h1>
-        <p className="text-white text-base sm:text-lg mt-10 drop-shadow-lg max-w-xl mx-auto">
+        <p className="text-white text-base sm:text-lg mt-10 drop-shadow-lg max-w-xl mx-auto font-thin">
           Experience products that transform everyday living, handpicked for
           quality and delivered flawlessly.
         </p>
 
-        <button className="mt-6 bg-black hover:bg-gray-900 text-white px-8 py-4 rounded-full font-medium transition-all shadow-lg shadow-black/30 pointer-events-auto cursor-pointer">
-          Explore
-        </button>
+        <Link to="/products">
+          <button className="mt-6 bg-black hover:bg-gray-900 text-white px-8 py-4 rounded-full font-medium transition-all shadow-lg shadow-black/30 pointer-events-auto cursor-pointer">
+            Explore
+          </button>
+        </Link>
       </div>
     </div>
   );
 };
 
-export default VoltmartParallax;
+export default ParallaxComponent;

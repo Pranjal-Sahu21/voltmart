@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useData } from "../context/DataContext";
 import Category from "./Category";
-import VoltMartParallax from "./VoltmartParallax";
+import VoltmartParallax from "./VoltmartParallax";
 
 const isValidImage = (url) => {
   if (!url) return false;
@@ -129,7 +129,7 @@ const Carousel = () => {
         </div>
       </div>
 
-      {showExtras && <VoltMartParallax />}
+      {showExtras && <VoltmartParallax />}
     </div>
   );
 };

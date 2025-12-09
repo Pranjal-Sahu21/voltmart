@@ -4,9 +4,8 @@ const Category = () => {
   const [data, setData] = useState([]);
 
   const getUniqueCategory = (data) => {
-    let newVal = data?.map((item) => item.category?.name);
-    newVal = [...new Set(newVal)];
-    return newVal;
+    let newVal = data?.map((item) => item.category);
+    return [...new Set(newVal)];
   };
 
   const categoryOnlyData = getUniqueCategory(data);
@@ -14,9 +13,9 @@ const Category = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://api.escuelajs.co/api/v1/products");
+        const res = await fetch("https://fakestoreapi.com/products");
         const json = await res.json();
-        setData(json);
+        setData(json); // direct array
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -31,7 +30,7 @@ const Category = () => {
         {categoryOnlyData?.map((item, index) => (
           <button
             key={index}
-            className="uppercase text-xs sm:text-sm tracking-wide font-medium text-gray-700 bg-gray-100 px-5 py-2.5 rounded-full border border-transparent hover:border-gray-300 hover:bg-white hover:text-gray-900 transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
+            className="uppercase text-xs sm:text-sm tracking-wide font-medium text-gray-700 bg-gray-100 px-5 py-2.5 rounded-full border hover:border-gray-300 hover:bg-white hover:text-gray-900 transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
           >
             {item}
           </button>

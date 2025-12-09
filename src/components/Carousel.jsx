@@ -41,25 +41,17 @@ const Carousel = () => {
   const [showExtras, setShowExtras] = useState(false);
 
   useEffect(() => {
-    const loadData = async () => {
-      await fetchAllProducts();
-    };
-    loadData();
+    fetchAllProducts();
   }, []);
 
   useEffect(() => {
     if (data.length) {
-      const cleaned = data.filter(
-        (item) => Array.isArray(item.images) && isValidImage(item.images[0])
-      );
+      const cleaned = data.filter((item) => isValidImage(item.image));
 
       const shuffled = [...cleaned].sort(() => 0.5 - Math.random());
       setRandomItems(shuffled.slice(0, 7));
 
-      const timer = setTimeout(() => {
-        setShowExtras(true);
-      }, 500);
-
+      const timer = setTimeout(() => setShowExtras(true), 500);
       return () => clearTimeout(timer);
     }
   }, [data]);
@@ -71,8 +63,8 @@ const Carousel = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    pauseOnHover: false,
     autoplaySpeed: 4500,
+    pauseOnHover: false,
     arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
@@ -81,7 +73,6 @@ const Carousel = () => {
   return (
     <div className="w-full bg-gray-50">
       <div className="w-full min-h-screen flex flex-col">
-        {/* Carousel */}
         <div className="grow">
           <div className="max-w-7xl mx-auto py-6 sm:py-10 h-full">
             <Slider {...settings}>
@@ -89,30 +80,40 @@ const Carousel = () => {
                 <div key={item.id} className="px-3 h-full">
                   <div className="bg-white rounded-3xl shadow-sm overflow-hidden h-full flex">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center p-6 sm:p-10 w-full">
+                      {/* TEXT SECTION */}
                       <div className="space-y-4 text-center md:text-left">
                         <span className="text-xs font-medium text-gray-400 uppercase">
-                          Featured Product
+                          {item.category}
                         </span>
 
-                        <h1 className="text-2xl sm:text-4xl font-semibold text-gray-900 leading-snug">
+                        <h1 className="text-2xl sm:text-4xl font-semibold text-gray-900 leading-snug line-clamp-2 mt-8">
                           {item.title}
                         </h1>
 
-                        <p className="text-gray-500 text-sm sm:text-base leading-snug line-clamp-2">
+                        <p className="text-gray-500 text-sm sm:text-base leading-snug line-clamp-2 mt-10">
                           {item.description}
                         </p>
 
-                        <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-all cursor-pointer">
+                        {/* DESKTOP BUTTON */}
+                        <button className="hidden md:inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-all cursor-pointer">
                           Shop Now
                         </button>
                       </div>
 
-                      <div className="flex justify-center items-center">
+                      {/* IMAGE SECTION + MOBILE BUTTON */}
+                      <div className="flex flex-col justify-center items-center">
                         <img
-                          src={item.images[0]}
+                          src={item.image}
                           alt={item.title}
                           className="max-h-[260px] sm:max-h-[340px] w-auto object-contain hover:scale-105 duration-300"
                         />
+
+                        {/* MOBILE BUTTON BELOW IMAGE */}
+                        <div className="md:hidden mt-4">
+                          <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-all cursor-pointer mt-4">
+                            Shop Now
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -120,6 +121,7 @@ const Carousel = () => {
               ))}
             </Slider>
           </div>
+
           {showExtras && (
             <div className="hidden md:block border-t border-gray-100">
               <Category />
@@ -128,7 +130,7 @@ const Carousel = () => {
         </div>
       </div>
 
-      {showExtras && <ParallaxComponent/>}
+      {showExtras && <ParallaxComponent />}
     </div>
   );
 };

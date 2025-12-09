@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -40,6 +40,35 @@ const Carousel = () => {
   const [randomItems, setRandomItems] = useState([]);
   const [showExtras, setShowExtras] = useState(false);
 
+  const [dotsOnDesktop, setDotsOnDesktop] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.innerWidth >= 768;
+  });
+
+  const resizeTimer = useRef(null);
+
+  useEffect(() => {
+    function handleResize() {
+      if (resizeTimer.current) clearTimeout(resizeTimer.current);
+      resizeTimer.current = setTimeout(() => {
+        setDotsOnDesktop(window.innerWidth >= 768);
+      }, 100);
+    }
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+
+      setDotsOnDesktop(window.innerWidth >= 768);
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", handleResize);
+      }
+      if (resizeTimer.current) clearTimeout(resizeTimer.current);
+    };
+  }, []);
+
   useEffect(() => {
     fetchAllProducts();
   }, []);
@@ -47,7 +76,6 @@ const Carousel = () => {
   useEffect(() => {
     if (data.length) {
       const cleaned = data.filter((item) => isValidImage(item.image));
-
       const shuffled = [...cleaned].sort(() => 0.5 - Math.random());
       setRandomItems(shuffled.slice(0, 7));
 
@@ -57,7 +85,7 @@ const Carousel = () => {
   }, [data]);
 
   const settings = {
-    dots: true,
+    dots: dotsOnDesktop,
     infinite: true,
     speed: 600,
     slidesToShow: 1,
@@ -105,7 +133,7 @@ const Carousel = () => {
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="max-h-[260px] sm:max-h-[340px] w-auto object-contain hover:scale-105 duration-300"
+                          className="max-h-[260px] sm:max-h-[340px] w-auto object-contain transform hover:rotate-1 hover:scale-105 duration-300 drop-shadow-[0_10px_35px_rgba(0,0,0,0.15)]"
                         />
 
                         {/* MOBILE BUTTON BELOW IMAGE */}

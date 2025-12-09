@@ -1,25 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useData } from "../context/DataContext";
 import FilterSection from "../components/FilterSection";
 import ProductCard from "../components/ProductCard";
 
 const Products = () => {
   const { data, fetchAllProducts } = useData();
-    useEffect(() => {
-      fetchAllProducts();
-    }, []);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+
+  const filteredData = data?.filter(
+    (item) =>
+      item.title.toLowerCase().includes(search.toLowerCase()) &&
+      (category === "" || item.category === category) &&
+      item.price >= priceRange[0] &&
+      item.price <= priceRange[1]
+  );
+
+  useEffect(() => {
+    fetchAllProducts();
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4">
         {data?.length > 0 ? (
           <div className="flex gap-10">
-            <div className="w-40 shrink-0 hidden lg:block">
-              <FilterSection />
+            <div className="w-64 shrink-0 hidden lg:block">
+              <FilterSection
+                search={search}
+                setSearch={setSearch}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                category={category}
+                setCategory={setCategory}
+                handleCategoryChange={handleCategoryChange}
+              />
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-7 mt-4 w-full">
-              {data?.map((product, index) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-7 mt-auto w-full">
+              {filteredData?.map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}
             </div>

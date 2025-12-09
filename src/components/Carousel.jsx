@@ -72,6 +72,7 @@ const Carousel = () => {
   useEffect(() => {
     fetchAllProducts();
   }, []);
+  
 
   useEffect(() => {
     if (data.length) {

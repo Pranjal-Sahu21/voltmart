@@ -1,28 +1,8 @@
 import { useEffect, useState } from "react";
+import { useData } from "../context/DataContext";
 
 const Category = () => {
-  const [data, setData] = useState([]);
-
-  const getUniqueCategory = (data) => {
-    let newVal = data?.map((item) => item.category);
-    return [...new Set(newVal)];
-  };
-
-  const categoryOnlyData = getUniqueCategory(data);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("https://fakestoreapi.com/products");
-        const json = await res.json();
-        setData(json); 
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  const {categoryOnlyData} = useData();
 
   return (
     <div className="bg-white border-b border-gray-100">

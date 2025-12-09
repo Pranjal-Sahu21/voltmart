@@ -123,7 +123,7 @@ const Carousel = () => {
                         </p>
 
                         {/* DESKTOP BUTTON */}
-                        <button className="hidden md:inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-all cursor-pointer">
+                        <button className="hidden md:inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer">
                           Shop Now
                         </button>
                       </div>
@@ -138,7 +138,7 @@ const Carousel = () => {
 
                         {/* MOBILE BUTTON BELOW IMAGE */}
                         <div className="md:hidden mt-4">
-                          <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-all cursor-pointer mt-4">
+                          <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4">
                             Shop Now
                           </button>
                         </div>

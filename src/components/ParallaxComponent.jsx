@@ -37,7 +37,7 @@ const ParallaxComponent = () => {
             </p>
 
             <Link to="/products">
-              <button className="bg-black text-white px-6 py-4 rounded-full hover:bg-gray-800 transition-all cursor-pointer mt-4">
+              <button className="bg-black text-white px-6 py-4 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4">
                 Explore Products
               </button>
             </Link>

@@ -23,7 +23,7 @@ const App = () => {
         const { latitude, longitude } = pos.coords;
 
         try {
-          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY; // Make sure you add this to your .env file
+          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY; 
           const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
           const response = await axios.get(url);

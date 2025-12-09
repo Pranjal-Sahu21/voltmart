@@ -42,24 +42,36 @@ const Navbar = () => {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          fetchLocation(pos.coords.latitude, pos.coords.longitude);
-        },
-        (err) => {
-          console.error("Geolocation error:", err);
-        }
+        (pos) => fetchLocation(pos.coords.latitude, pos.coords.longitude),
+        (err) => console.error("Geolocation error:", err)
       );
     }
   }, []);
 
   return (
     <>
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+      {/* Desktop Navbar sliding from top */}
+      <motion.header
+        className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          type: "spring",
+          stiffness: 80,
+          damping: 20,
+          duration: 0.8,
+        }}
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-between py-3 px-4">
           {/* Logo */}
-          <Link to="/" className="text-black font-bold text-2xl tracking-tight">
+          <Link
+            to="/"
+            className="text-black font-bold text-2xl tracking-tight flex"
+          >
             <span className="text-black">V</span>oltmart
+            <div className="w-6 mt-1 ml-2">
+              <img src="./favicon.svg" alt="Voltmart logo" />
+            </div>
           </Link>
 
           {/* Desktop Nav */}
@@ -81,7 +93,6 @@ const Navbar = () => {
 
           {/* Right controls */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Location */}
             <div className="flex items-center gap-1 text-gray-500 text-sm">
               <MapPin size={16} />
               <span>
@@ -91,7 +102,6 @@ const Navbar = () => {
               </span>
             </div>
 
-            {/* Cart */}
             <Link to="/cart" className="relative">
               <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition" />
               <span className="absolute -top-2 -right-3 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
@@ -99,7 +109,6 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Auth */}
             <SignedOut>
               <SignInButton className="bg-black text-white px-4 py-2 rounded-full text-xs hover:bg-gray-800 transition cursor-pointer" />
             </SignedOut>
@@ -116,9 +125,9 @@ const Navbar = () => {
             <Menu size={28} />
           </button>
         </div>
-      </header>
+      </motion.header>
 
-      {/* Mobile Slide Menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -131,7 +140,7 @@ const Navbar = () => {
               exit={{ opacity: 0 }}
             />
 
-            {/* Drawer */}
+            {/* Mobile Drawer */}
             <motion.div
               className="fixed top-0 right-0 w-64 h-full bg-white z-50 shadow-xl p-6 flex flex-col gap-6"
               initial={{ x: "100%" }}
@@ -174,7 +183,7 @@ const Navbar = () => {
               {/* Cart */}
               <Link
                 to="/cart"
-                className="flex items-center gap-2 text-gray-700 hover:text-black "
+                className="flex items-center gap-2 text-gray-700 hover:text-black"
                 onClick={() => setMobileOpen(false)}
               >
                 <IoCartOutline size={20} />

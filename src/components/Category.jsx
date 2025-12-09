@@ -15,7 +15,7 @@ const Category = () => {
       try {
         const res = await fetch("https://fakestoreapi.com/products");
         const json = await res.json();
-        setData(json); // direct array
+        setData(json); 
       } catch (error) {
         console.error("Error fetching categories:", error);
       }

@@ -93,7 +93,7 @@ const FilterSection = ({
         />
       </div>
       <button
-        className="w-full bg-black text-white font-medium py-3 rounded-lg hover:bg-neutral-800 transition-all shadow-md hover:shadow-lg cursor-pointer active:scale-95 mt-8"
+        className="w-full bg-black text-white font-medium py-3 rounded-lg hover:bg-neutral-800 transition-all shadow-md hover:shadow-lg cursor-pointer active:scale-95 mt-12"
         onClick={() => {
           setSearch("");
           setCategory("");

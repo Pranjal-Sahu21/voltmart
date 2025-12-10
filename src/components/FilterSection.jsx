@@ -92,6 +92,16 @@ const FilterSection = ({
       [&::-webkit-slider-thumb]:hover:scale-110"
         />
       </div>
+      <button
+        className="w-full bg-black text-white font-medium py-3 rounded-lg hover:bg-neutral-800 transition-all shadow-md hover:shadow-lg cursor-pointer active:scale-95 mt-8"
+        onClick={() => {
+          setSearch("");
+          setCategory("");
+          setPriceRange([0, 1000]);
+        }}
+      >
+        Reset Filters
+      </button>
     </div>
   );
 };

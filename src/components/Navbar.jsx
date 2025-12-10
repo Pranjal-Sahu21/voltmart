@@ -68,14 +68,14 @@ const Navbar = () => {
             to="/"
             className="text-black font-bold text-2xl tracking-tight flex"
           >
-            <span className="text-black">V</span>oltmart
+            Voltmart
             <div className="w-6 mt-1 ml-2">
               <img src="./favicon.svg" alt="Voltmart logo" />
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center flex-1 justify-center gap-8 text-sm font-medium text-gray-700 ml-40 pr-4">
+          <nav className="hidden md:flex items-center flex-1 justify-center gap-8 text-sm font-medium text-gray-700 md:ml-20 pr-4">
             {links.map(({ path, label }) => (
               <NavLink
                 key={path}

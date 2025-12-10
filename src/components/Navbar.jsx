@@ -9,10 +9,12 @@ import React, { useState, useEffect } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location, setLocation] = useState(null);
+  const {cartItem} = useCart();
 
   const links = [
     { path: "/", label: "Home" },
@@ -102,7 +104,7 @@ const Navbar = () => {
             <Link to="/cart" className="relative">
               <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition" />
               <span className="absolute -top-2 -right-3 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
-                0
+                {cartItem.length}
               </span>
             </Link>
 

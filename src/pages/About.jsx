@@ -67,7 +67,7 @@ const About = () => {
           </p>
 
           <Link to="/products">
-            <button className="bg-black text-white px-6 py-2 rounded-full hover:bg-neutral-800 transition duration-300 cursor-pointer">
+            <button className="bg-black text-white px-6 py-4 mt-8 rounded-full hover:bg-neutral-800 transition duration-300 cursor-pointer">
               Start Shopping
             </button>
           </Link>

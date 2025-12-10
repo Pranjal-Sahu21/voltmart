@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useData } from "../context/DataContext";
 import Category from "./Category";
 import ParallaxComponent from "./ParallaxComponent";
+import { useNavigate } from "react-router-dom";
 
 const isValidImage = (url) => {
   if (!url) return false;
@@ -69,10 +70,11 @@ const Carousel = () => {
     };
   }, []);
 
+  const navigate = useNavigate();
+  
   useEffect(() => {
     fetchAllProducts();
   }, []);
-  
 
   useEffect(() => {
     if (data.length) {
@@ -134,7 +136,8 @@ const Carousel = () => {
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="max-h-[260px] sm:max-h-[340px] w-auto object-contain transform hover:rotate-1 hover:scale-105 duration-300 drop-shadow-[0_10px_35px_rgba(0,0,0,0.15)]"
+                          onClick={() => navigate(`/products/${item.id}`)}
+                          className="max-h-[260px] sm:max-h-[340px] w-auto object-contain cursor-pointer transform hover:rotate-1 hover:scale-105 duration-300 drop-shadow-2xl"
                         />
 
                         {/* MOBILE BUTTON BELOW IMAGE */}

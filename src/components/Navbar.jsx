@@ -69,9 +69,6 @@ const Navbar = () => {
             className="text-black font-bold text-2xl tracking-tight flex"
           >
             Voltmart
-            <div className="w-6 mt-1 ml-2">
-              <img src="./favicon.svg" alt="Voltmart logo" />
-            </div>
           </Link>
 
           {/* Desktop Nav */}

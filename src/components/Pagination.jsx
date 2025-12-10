@@ -28,7 +28,7 @@ const Pagination = ({ pageHandler, page, dynamicPage }) => {
       ${
         page === 1
           ? "bg-gray-600 cursor-not-allowed"
-          : "bg-black hover:bg-gray-800 cursor-pointer"
+          : "bg-black hover:bg-gray-800 cursor-pointer active:scale-95"
       }
     `}
       >
@@ -42,7 +42,7 @@ const Pagination = ({ pageHandler, page, dynamicPage }) => {
           disabled={p === "..."}
           className={`px-3 py-1 rounded-md text-sm transition
         ${
-          p === page ? "font-bold" : "text-gray-700 hover:bg-gray-200 cursor-pointer"
+          p === page ? "font-bold" : "text-gray-700 hover:bg-gray-200 cursor-pointer "
         }
       `}
         >
@@ -57,7 +57,7 @@ const Pagination = ({ pageHandler, page, dynamicPage }) => {
       ${
         page === dynamicPage
           ? "bg-gray-600 cursor-not-allowed"
-          : "bg-black hover:bg-gray-800 cursor-pointer"
+          : "bg-black hover:bg-gray-800 cursor-pointer active:scale-95"
       }
     `}
       >

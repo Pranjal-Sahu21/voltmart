@@ -3,6 +3,8 @@ import { useData } from "../context/DataContext";
 import FilterSection from "../components/FilterSection";
 import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
+import Lottie from "lottie-react";
+import notFound from "../assets/Lonely404.json";
 
 const Products = () => {
   const { data, fetchAllProducts } = useData();
@@ -53,21 +55,35 @@ const Products = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-7 w-full">
-                {filteredData
-                  ?.slice(page * 8 - 8, page * 8)
-                  .map((product, index) => (
-                    <ProductCard key={index} product={product} />
-                  ))}
+              {/* If no filtered products */}
+              {filteredData.length === 0 ? (
+                <div className="flex flex-col justify-center items-center md:h-[600px] md:w-[900px]">
+                  <Lottie animationData={notFound} classID="w-[500px]" />
+                  <p className="text-gray-600 text-lg mt-1 text-center px-4">
+                    No products found.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-7 w-full">
+                  {filteredData
+                    ?.slice(page * 8 - 8, page * 8)
+                    .map((product, index) => (
+                      <ProductCard key={index} product={product} />
+                    ))}
+                </div>
+              )}
+            </div>
+
+            {/* Show pagination only if products exist */}
+            {filteredData.length > 0 && (
+              <div className="flex justify-center mt-12">
+                <Pagination
+                  pageHandler={pageHandler}
+                  page={page}
+                  dynamicPage={dynamicPage}
+                />
               </div>
-            </div>
-            <div className="flex justify-center mt-12">
-              <Pagination
-                pageHandler={pageHandler}
-                page={page}
-                dynamicPage={dynamicPage}
-              />
-            </div>
+            )}
           </>
         ) : (
           <div className="flex flex-col items-center justify-center h-[400px] text-gray-500 text-lg gap-4">

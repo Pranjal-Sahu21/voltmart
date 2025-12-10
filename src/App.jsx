@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import axios from "axios";
 import Footer from "./components/Footer";
 import SingleProduct from "./pages/SingleProduct";
+import NotFound from "./components/NotFound";
 
 const App = () => {
   const [location, setLocation] = useState();
@@ -68,6 +69,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer/>
     </BrowserRouter>

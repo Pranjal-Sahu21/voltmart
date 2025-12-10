@@ -13,6 +13,7 @@ const Products = () => {
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
+    setPage(1);
   };
 
   const filteredData = data?.filter(

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuNotebookText } from "react-icons/lu";
@@ -7,10 +7,20 @@ import { MdDeliveryDining } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import notFound from "../assets/EmptyBox.json";
+import { useUser } from "@clerk/clerk-react";
 
-const Cart = () => {
+const Cart = ({ location, getLocation }) => {
   const { cartItem } = useCart();
   const navigate = useNavigate();
+  const totalPrice = cartItem
+    .reduce((total, item) => total + item.price, 0)
+    .toFixed(2);
+
+  const { user } = useUser();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white px-4 py-10 flex justify-center">
@@ -31,19 +41,20 @@ const Cart = () => {
                   flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 hover:shadow-md transition-all"
                 >
                   {/* LEFT: IMAGE + TEXT */}
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 w-full">
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-16 h-16 object-contain bg-gray-100 rounded-md p-2 border border-black/10 cursor-pointer"
+                      className="w-16 h-16 object-contain bg-gray-100 rounded-md p-2 border border-black/10 cursor-pointer shrink-0"
                       onClick={() => navigate(`/products/${item.id}`)}
                     />
 
-                    <div>
-                      <h2 className="text-[15px] font-medium text-black w-[220px] sm:w-[260px] line-clamp-2 p-2">
+                    <div className="flex flex-col justify-center w-full">
+                      <h2 className="text-[15px] font-medium text-black max-w-full sm:max-w-[260px] line-clamp-2 leading-tight wrap-break-word">
                         {item.title}
                       </h2>
-                      <p className="text-[17px] font-semibold text-black mt-1 p-2">
+
+                      <p className="text-[17px] font-semibold text-black mt-4 leading-snug">
                         ${item.price}
                       </p>
                     </div>
@@ -63,7 +74,7 @@ const Cart = () => {
                     </div>
 
                     {/* Delete */}
-                    <button className="p-2 border border-black rounded-md hover:bg-black hover:text-white transition">
+                    <button className="p-2 border border-black rounded-md hover:bg-black hover:text-white cursor-pointer transition">
                       <FaRegTrashAlt className="text-sm" />
                     </button>
                   </div>
@@ -72,22 +83,14 @@ const Cart = () => {
             </div>
 
             {/* TWO-COLUMN: RESPONSIVE FORM + BILL */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
               {/* DELIVERY FORM */}
-              <div className="bg-white border border-black/10 rounded-lg p-6 shadow-sm">
+              <div className="bg-white border border-black/10 rounded-lg p-6 shadow-sm h-full">
                 <h2 className="text-xl font-semibold text-black mb-5 tracking-tight">
                   Delivery Info
                 </h2>
 
                 <div className="flex flex-col gap-3 text-sm">
-                  {/* Detect Location */}
-                  <button
-                    className="w-full mb-2 border border-black py-2 rounded-md text-sm cursor-pointer 
-                    hover:bg-black hover:text-white transition active:scale-95"
-                  >
-                    Detect My Location
-                  </button>
-
                   <div>
                     <label className="font-medium text-black mb-1 block">
                       Full Name
@@ -97,6 +100,7 @@ const Cart = () => {
                       className="w-full p-2 border border-black/20 rounded-md text-sm 
                       focus:ring-1 focus:ring-black outline-none"
                       placeholder="John Doe"
+                      value={user.fullName}
                     />
                   </div>
 
@@ -119,9 +123,9 @@ const Cart = () => {
                       </label>
                       <input
                         type="text"
+                        placeholder="State"
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
-                        placeholder="State"
                       />
                     </div>
                     <div className="w-full">
@@ -147,6 +151,7 @@ const Cart = () => {
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
                         placeholder="Country"
+                        value={location.country}
                       />
                     </div>
                     <div className="w-full">
@@ -163,7 +168,7 @@ const Cart = () => {
                   </div>
 
                   <button
-                    className="w-full bg-black text-white py-2 mt-2 rounded-md text-sm 
+                    className="w-full bg-black text-white py-2 mt-6 rounded-md text-sm 
                   hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
                   >
                     Save Address
@@ -172,70 +177,102 @@ const Cart = () => {
               </div>
 
               {/* BILL SUMMARY */}
-              <div className="bg-white border border-black/10 rounded-lg p-6 shadow-sm h-max">
-                <h2 className="text-xl font-semibold text-black mb-5 tracking-tight">
-                  Bill Summary
-                </h2>
+              <div className="bg-white border border-black/10 rounded-lg p-6 shadow-sm h-full flex flex-col justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold text-black mb-5 tracking-tight">
+                    Bill Summary
+                  </h2>
 
-                <div className="space-y-3 text-sm text-black">
-                  <div className="flex justify-between">
-                    <p className="flex items-center gap-1">
-                      <LuNotebookText /> Items Total
-                    </p>
-                    <span className="font-semibold">${/* total */}</span>
+                  {/* Order Breakdown */}
+                  <div className="space-y-3 text-sm text-black mb-6">
+                    <div className="flex justify-between">
+                      <p className="flex items-center gap-1">
+                        <LuNotebookText /> Items Total
+                      </p>
+                      <span className="font-semibold">${totalPrice}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <p className="flex items-center gap-1">
+                        <MdDeliveryDining /> Delivery Charge
+                      </p>
+                      <div className="flex gap-1">
+                        <span
+                          className="line-through font-semibold"
+                          style={{ textDecorationThickness: "2px" }}
+                        >
+                          $6
+                        </span>
+
+                        <span className="font-semibold text-green-600 text-[13px]">
+                          FREE
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <p className="flex items-center gap-1">
+                        <GiShoppingBag /> Handling Fee
+                      </p>
+                      <span className="font-semibold">
+                        ${(totalPrice / 200).toFixed(2)}
+                      </span>
+                    </div>
+
+                    {/* Estimated Taxes */}
+                    <div className="flex justify-between">
+                      <p className="flex items-center gap-1">
+                        🧾 Estimated Taxes
+                      </p>
+                      <span className="font-semibold">
+                        ${(totalPrice * 0.06).toFixed(2)}
+                      </span>
+                    </div>
+
+                    <hr className="border-black/10 my-4" />
+
+                    <div className="flex justify-between text-base font-semibold">
+                      <p>Grand Total</p>
+                      <span>
+                        $
+                        {(
+                          Number(totalPrice) +
+                          totalPrice / 200 +
+                          totalPrice * 0.06
+                        ).toFixed(2)}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex justify-between">
-                    <p className="flex items-center gap-1">
-                      <MdDeliveryDining /> Delivery Charge
-                    </p>
-                    <span className="font-semibold text-green-600 text-[13px]">
-                      FREE
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <p className="flex items-center gap-1">
-                      <GiShoppingBag /> Handling Fee
-                    </p>
-                    <span className="font-semibold">$5</span>
-                  </div>
-
-                  <hr className="border-black/10" />
-
-                  <div className="flex justify-between text-base font-semibold">
-                    <p>Grand Total</p>
-                    <span>${/* total + 5 */}</span>
-                  </div>
-
-                  {/* Promo */}
+                  {/* Promo Code */}
                   <div className="mt-4">
-                    <label className="font-semibold mb-1 block">
+                    <label className="font-semibold mb-1 block text-sm">
                       Promo Code
                     </label>
                     <div className="flex gap-2">
                       <input
                         type="text"
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
-                        focus:ring-1 focus:ring-black outline-none"
+          focus:ring-1 focus:ring-black outline-none"
                         placeholder="Enter promo"
                       />
                       <button
                         className="border border-black px-3 py-1 rounded-md text-sm 
-                      hover:bg-black hover:text-white transition-all cursor-pointer active:scale-95"
+          hover:bg-black hover:text-white transition-all cursor-pointer active:scale-95"
                       >
                         Apply
                       </button>
                     </div>
                   </div>
-
-                  <button
-                    className="w-full bg-black text-white py-2 rounded-md mt-4 text-sm 
-                  hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
-                  >
-                    Proceed to Checkout
-                  </button>
                 </div>
+
+                {/* Checkout Button */}
+                <button
+                  className="w-full bg-black text-white py-2 rounded-md mt-6 text-sm 
+      hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
+                >
+                  Proceed to Checkout
+                </button>
               </div>
             </div>
           </>

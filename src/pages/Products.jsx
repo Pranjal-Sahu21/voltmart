@@ -5,6 +5,7 @@ import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import Lottie from "lottie-react";
 import notFound from "../assets/Lonely404.json";
+import MobileFilter from "../components/MobileFilter";
 
 const Products = () => {
   const { data, fetchAllProducts } = useData();
@@ -12,10 +13,12 @@ const Products = () => {
   const [category, setCategory] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [page, setPage] = useState(1);
+  const [openFilter, setOpenFilter] = useState(false);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
     setPage(1);
+    setOpenFilter(false);
   };
 
   const filteredData = data?.filter(
@@ -40,6 +43,17 @@ const Products = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4">
+        <MobileFilter
+          openFilter={openFilter}
+          setOpenFilter={setOpenFilter}
+          search={search}
+          setSearch={setSearch}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          category={category}
+          setCategory={setCategory}
+          handleCategoryChange={handleCategoryChange}
+        />
         {data?.length > 0 ? (
           <>
             <div className="flex gap-10">

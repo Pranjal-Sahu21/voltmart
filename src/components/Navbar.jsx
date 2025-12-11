@@ -3,6 +3,7 @@ import {
   SignedOut,
   SignInButton,
   UserButton,
+  useUser,
 } from "@clerk/clerk-react";
 import { MapPin, Menu, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
@@ -14,6 +15,8 @@ import { useCart } from "../context/CartContext";
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location, setLocation] = useState(null);
+
+  const { user } = useUser();
 
   const links = [
     { path: "/", label: "Home" },
@@ -103,8 +106,8 @@ const Navbar = () => {
             </div>
 
             <Link to="/cart" className="relative">
-              <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition" />
-              <span className="absolute -top-2 -right-3 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
+              <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition mr-1" />
+              <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
                 {cartItem.length}
               </span>
             </Link>
@@ -167,6 +170,25 @@ const Navbar = () => {
                 />
               </div>
 
+              {/* Auth */}
+              <div className="pt-4 border-t flex items-center gap-3">
+                <SignedOut>
+                  <SignInButton className="bg-black text-white w-full py-2 rounded-full text-sm hover:bg-gray-800 transition cursor-pointer" />
+                </SignedOut>
+
+                <SignedIn>
+                  <UserButton />
+                  <div className="flex flex-col gap-0.5">
+                    <span className="mt-2 text-gray-600">
+                      Hello, {user?.firstName}
+                    </span>
+                    <span className="text-gray-400 text-[12px]">
+                      Premium user
+                    </span>
+                  </div>
+                </SignedIn>
+              </div>
+
               {/* Location */}
               <div className="flex items-center gap-2 text-gray-600 text-sm border-b pb-4">
                 <MapPin size={16} />
@@ -184,21 +206,12 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     isActive
                       ? "text-black font-semibold pb-1"
-                      : "text-gray-700 hover:text-black transition border-b-2 border-transparent pb-1"
+                      : "text-gray-700 hover:text-black transition pb-1"
                   }
                 >
                   {label}
                 </NavLink>
               ))}
-              {/* Auth */}
-              <div className="pt-4 border-t">
-                <SignedOut>
-                  <SignInButton className="bg-black text-white w-full py-2 rounded-full text-sm hover:bg-gray-800 transition cursor-pointer" />
-                </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-              </div>
             </motion.div>
           </>
         )}

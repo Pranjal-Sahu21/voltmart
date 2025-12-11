@@ -5,6 +5,8 @@ import { LuNotebookText } from "react-icons/lu";
 import { GiShoppingBag } from "react-icons/gi";
 import { MdDeliveryDining } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Lottie from "lottie-react";
+import notFound from "../assets/EmptyBox.json";
 
 const Cart = () => {
   const { cartItem } = useCart();
@@ -238,8 +240,25 @@ const Cart = () => {
             </div>
           </>
         ) : (
-          <div className="text-center text-lg text-gray-600">
-            Your cart is empty.
+          <div className="flex flex-col justify-center items-center py-16">
+            {/* Animation */}
+            <div className="w-56 sm:w-72 md:w-80">
+              <Lottie animationData={notFound} />
+            </div>
+
+            {/* Text */}
+            <p className="text-gray-700 text-base sm:text-lg text-center px-6 mt-6 leading-relaxed">
+              Your cart feels a little empty right now.
+            </p>
+
+            {/* Button */}
+            <button
+              onClick={() => navigate("/products")}
+              className="mt-8 w-44 sm:w-52 bg-black text-white py-2.5 rounded-md text-sm 
+               hover:bg-gray-900 transition-all tracking-wide cursor-pointer active:scale-95"
+            >
+              Start Shopping
+            </button>
           </div>
         )}
       </div>

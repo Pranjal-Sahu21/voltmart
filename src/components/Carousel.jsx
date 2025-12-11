@@ -4,7 +4,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useData } from "../context/DataContext";
-import Category from "./Category";
 import ParallaxComponent from "./ParallaxComponent";
 import { useNavigate } from "react-router-dom";
 
@@ -71,7 +70,7 @@ const Carousel = () => {
   }, []);
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     fetchAllProducts();
   }, []);
@@ -126,7 +125,7 @@ const Carousel = () => {
                         </p>
 
                         {/* DESKTOP BUTTON */}
-                        <button className="hidden md:inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer">
+                        <button onClick={() => navigate(`/products/${item.id}`)} className="hidden md:inline-block bg-black text-white px-6 py-3 active:scale-95 rounded-full hover:bg-[#25241F] transition-all cursor-pointer">
                           Shop Now
                         </button>
                       </div>
@@ -153,12 +152,6 @@ const Carousel = () => {
               ))}
             </Slider>
           </div>
-
-          {showExtras && (
-            <div className="hidden md:block border-t border-gray-100">
-              <Category />
-            </div>
-          )}
         </div>
       </div>
 

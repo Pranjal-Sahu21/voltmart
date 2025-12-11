@@ -14,7 +14,6 @@ import { useCart } from "../context/CartContext";
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location, setLocation] = useState(null);
-  const {cartItem} = useCart();
 
   const links = [
     { path: "/", label: "Home" },
@@ -22,6 +21,8 @@ const Navbar = () => {
     { path: "/about", label: "About" },
     { path: "/contact", label: "Contact" },
   ];
+
+  const { cartItem } = useCart();
 
   useEffect(() => {
     const fetchLocation = async (lat, lon) => {
@@ -116,13 +117,24 @@ const Navbar = () => {
             </SignedIn>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="md:hidden text-gray-800"
-          >
-            <Menu size={28} />
-          </button>
+          {/* Mobile Cart + Menu */}
+          <div className="flex items-center gap-4 md:hidden">
+            {/* Mobile Cart Icon */}
+            <Link to="/cart" className="relative">
+              <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition" />
+              <span className="absolute -top-2 -right-3 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
+                {cartItem.length}
+              </span>
+            </Link>
+
+            {/* Hamburger Button */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="text-gray-800"
+            >
+              <Menu size={28} />
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -178,17 +190,6 @@ const Navbar = () => {
                   {label}
                 </NavLink>
               ))}
-
-              {/* Cart */}
-              <Link
-                to="/cart"
-                className="flex items-center gap-2 text-gray-700 hover:text-black"
-                onClick={() => setMobileOpen(false)}
-              >
-                <IoCartOutline size={20} />
-                Cart
-              </Link>
-
               {/* Auth */}
               <div className="pt-4 border-t">
                 <SignedOut>

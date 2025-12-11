@@ -10,10 +10,10 @@ import notFound from "../assets/EmptyBox.json";
 import { useUser } from "@clerk/clerk-react";
 
 const Cart = ({ location, getLocation }) => {
-  const { cartItem } = useCart();
+  const { cartItem, updateQuantity, deleteItem } = useCart();
   const navigate = useNavigate();
   const totalPrice = cartItem
-    .reduce((total, item) => total + item.price, 0)
+    .reduce((total, item) => total + item.price * item.quantity, 0)
     .toFixed(2);
 
   const { user } = useUser();
@@ -64,17 +64,32 @@ const Cart = ({ location, getLocation }) => {
                   <div className="flex items-center gap-3 sm:ml-auto self-end sm:self-center">
                     {/* Quantity */}
                     <div className="flex items-center gap-2 border border-black rounded-md px-2 py-1 text-[14px]">
-                      <button className="text-black font-semibold hover:opacity-60">
+                      <button
+                        className="text-black font-semibold hover:opacity-60 cursor-pointer"
+                        onClick={() =>
+                          updateQuantity(cartItem, item.id, "decrease")
+                        }
+                      >
                         -
                       </button>
-                      <span className="font-semibold text-black">1</span>
-                      <button className="text-black font-semibold hover:opacity-60">
+                      <span className="font-semibold text-black">
+                        {item.quantity}
+                      </span>
+                      <button
+                        className="text-black font-semibold hover:opacity-60 cursor-pointer"
+                        onClick={() =>
+                          updateQuantity(cartItem, item.id, "increase")
+                        }
+                      >
                         +
                       </button>
                     </div>
 
                     {/* Delete */}
-                    <button className="p-2 border border-black rounded-md hover:bg-black hover:text-white cursor-pointer transition">
+                    <button
+                      className="p-2 border border-black rounded-md hover:bg-black hover:text-white cursor-pointer transition"
+                      onClick={() => deleteItem(item.id)}
+                    >
                       <FaRegTrashAlt className="text-sm" />
                     </button>
                   </div>

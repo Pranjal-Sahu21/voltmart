@@ -11,7 +11,7 @@ const SingleProduct = () => {
   const [singleProduct, setSingleProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const {addToCart} = useCart();
+  const { addToCart } = useCart();
 
   const getSingleProduct = async () => {
     try {
@@ -105,20 +105,11 @@ const SingleProduct = () => {
                 ({singleProduct.rating?.count} reviews)
               </span>
             </div>
-            {/* QUANTITY */}
-            <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-gray-700">
-                Quantity:
-              </label>
-              <input
-                type="number"
-                min={1}
-                defaultValue={1}
-                className="w-20 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
-              />
-            </div>
             <div className="mt-4 flex justify-center md:justify-start">
-              <button onClick={() => addToCart(singleProduct)} className="flex gap-1 bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:bg-[#25241F] transition-all active:scale-95">
+              <button
+                onClick={() => addToCart(singleProduct)}
+                className="flex gap-1 bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:bg-[#25241F] transition-all active:scale-95"
+              >
                 <IoCartOutline className="w-6 h-6" />
                 Add to Cart
               </button>

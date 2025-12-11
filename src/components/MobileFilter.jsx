@@ -2,6 +2,7 @@ import React from "react";
 import { FaFilter } from "react-icons/fa6";
 import { useData } from "../context/DataContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 const MobileFilter = ({
   openFilter,
@@ -20,10 +21,17 @@ const MobileFilter = ({
     <>
       <div className="bg-gray-100 flex justify-between items-center lg:hidden -mt-6 p-2 rounded-md">
         <h1 className="font-semibold text-xl">Filters</h1>
-        <FaFilter
-          onClick={() => setOpenFilter((prev) => !prev)}
-          className="text-gray-800"
-        />
+        {openFilter ? (
+          <X
+            onClick={() => setOpenFilter((prev) => !prev)}
+            className="text-black"
+          />
+        ) : (
+          <FaFilter
+            onClick={() => setOpenFilter((prev) => !prev)}
+            className="text-gray-800"
+          />
+        )}
       </div>
 
       {/* AnimatePresence handles mount/unmount animation */}

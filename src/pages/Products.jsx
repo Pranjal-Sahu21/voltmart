@@ -31,6 +31,7 @@ const Products = () => {
 
   const pageHandler = (selectedPage) => {
     setPage(selectedPage);
+    window.scrollTo(0, 0);
   };
 
   const dynamicPage = Math.ceil(filteredData?.length / 8);

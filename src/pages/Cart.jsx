@@ -115,7 +115,7 @@ const Cart = ({ location, getLocation }) => {
                       className="w-full p-2 border border-black/20 rounded-md text-sm 
                       focus:ring-1 focus:ring-black outline-none"
                       placeholder="John Doe"
-                      value={user.fullName}
+                      value={user?.fullName}
                     />
                   </div>
 
@@ -166,7 +166,7 @@ const Cart = ({ location, getLocation }) => {
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
                         placeholder="Country"
-                        value={location.country}
+                        value={location?.country}
                       />
                     </div>
                     <div className="w-full">

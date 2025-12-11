@@ -14,7 +14,6 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <DataProvider>
       <CartProvider>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
@@ -35,5 +34,4 @@ createRoot(document.getElementById("root")).render(
         </ClerkProvider>
       </CartProvider>
     </DataProvider>
-  </StrictMode>
 );

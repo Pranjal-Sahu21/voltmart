@@ -10,10 +10,14 @@ import axios from "axios";
 import Footer from "./components/Footer";
 import SingleProduct from "./pages/SingleProduct";
 import NotFound from "./components/NotFound";
+import { useCart } from "./context/CartContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [location, setLocation] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
+
+  const { cartItem, setCartItem } = useCart();
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -26,7 +30,7 @@ const App = () => {
         const { latitude, longitude } = pos.coords;
 
         try {
-          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY; 
+          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
           const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
           const response = await axios.get(url);
@@ -54,6 +58,20 @@ const App = () => {
     getLocation();
   }, []);
 
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cartItem");
+    if (storedCart) {
+      console.log("Getting it");
+
+      setCartItem(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartItem", JSON.stringify(cartItem));
+    console.log("Saving", cartItem);
+  }, [cartItem]);
+
   return (
     <BrowserRouter>
       <Navbar
@@ -68,10 +86,17 @@ const App = () => {
         <Route path="/products/:id" element={<SingleProduct />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/cart" element={<Cart location={location} getLocation={getLocation}/>} />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart location={location} getLocation={getLocation} />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 };

@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import React from "react";
+import React, { useEffect } from "react";
 import delivery from "../assets/Delivery.json";
 import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
@@ -7,6 +7,9 @@ import empty from "../assets/EmptyBox.json";
 
 const CheckOut = () => {
   const { cartItem } = useCart();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
 
   if (cartItem.length === 0) {
     return (

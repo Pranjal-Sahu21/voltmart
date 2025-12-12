@@ -14,7 +14,7 @@ export const CartProvider = ({ children }) => {
       setCartItem(updatedCart);
     } else {
       setCartItem([...cartItem, { ...product, quantity: 1 }]);
-      toast.success("Product successfully added to cart");
+      toast.success("Product successfully added to cart.");
     }
   };
 
@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
 
                 if (confirmDelete) {
                   setCartItem(cartItem.filter((item) => item.id !== productId));
-                  toast.success("Product removed");
+                  toast.success("Product removed.");
                 }
               }
               newUnit = newUnit - 1;
@@ -54,7 +54,7 @@ export const CartProvider = ({ children }) => {
 
     if (confirmDelete) {
       setCartItem(cartItem.filter((item) => item.id !== productId));
-      toast.success("Product removed");
+      toast.success("Product removed.");
     }
   };
 

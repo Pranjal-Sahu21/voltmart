@@ -11,7 +11,6 @@ import Footer from "./components/Footer";
 import SingleProduct from "./pages/SingleProduct";
 import NotFound from "./components/NotFound";
 import { useCart } from "./context/CartContext";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [location, setLocation] = useState();
@@ -88,11 +87,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route
           path="/cart"
-          element={
-            <ProtectedRoute>
-              <Cart location={location} getLocation={getLocation} />
-            </ProtectedRoute>
-          }
+          element={<Cart location={location} getLocation={getLocation} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

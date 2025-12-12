@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuNotebookText } from "react-icons/lu";
@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import notFound from "../assets/EmptyBox.json";
 import { useUser } from "@clerk/clerk-react";
+import { toast } from "react-toastify";
 
-const Cart = ({ location, getLocation }) => {
+const Cart = ({ location }) => {
   const { cartItem, updateQuantity, deleteItem } = useCart();
   const navigate = useNavigate();
   const totalPrice = cartItem
@@ -17,6 +18,40 @@ const Cart = ({ location, getLocation }) => {
     .toFixed(2);
 
   const { user } = useUser();
+
+  // DELIVERY FORM (LOCAL STORAGE)
+  const [address, setAddress] = useState({
+    fullName: "",
+    street: "",
+    state: "",
+    pincode: "",
+    country: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("deliveryAddress");
+    if (saved) {
+      setAddress(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    setAddress((prev) => ({
+      ...prev,
+      fullName: prev.fullName || user?.fullName || "",
+      country: prev.country || location?.country || "",
+    }));
+  }, [user, location]);
+
+  const saveAddress = () => {
+    localStorage.setItem("deliveryAddress", JSON.stringify(address));
+    toast.success('Address saved successfully.');
+  };
+
+  const updateField = (field, value) => {
+    setAddress({ ...address, [field]: value });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -115,7 +150,8 @@ const Cart = ({ location, getLocation }) => {
                       className="w-full p-2 border border-black/20 rounded-md text-sm 
                       focus:ring-1 focus:ring-black outline-none"
                       placeholder="John Doe"
-                      value={user?.fullName}
+                      value={address.fullName}
+                      onChange={(e) => updateField("fullName", e.target.value)}
                     />
                   </div>
 
@@ -125,6 +161,8 @@ const Cart = ({ location, getLocation }) => {
                     </label>
                     <input
                       type="text"
+                      value={address.street}
+                      onChange={(e) => updateField("street", e.target.value)}
                       placeholder="Your address"
                       className="w-full p-2 border border-black/20 rounded-md text-sm 
                       focus:ring-1 focus:ring-black outline-none"
@@ -138,6 +176,8 @@ const Cart = ({ location, getLocation }) => {
                       </label>
                       <input
                         type="text"
+                        value={address.state}
+                        onChange={(e) => updateField("state", e.target.value)}
                         placeholder="State"
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
@@ -149,6 +189,8 @@ const Cart = ({ location, getLocation }) => {
                       </label>
                       <input
                         type="text"
+                        value={address.pincode}
+                        onChange={(e) => updateField("pincode", e.target.value)}
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
                         placeholder="Pincode"
@@ -166,7 +208,8 @@ const Cart = ({ location, getLocation }) => {
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
                         placeholder="Country"
-                        value={location?.country}
+                        value={address.country}
+                        onChange={(e) => updateField("country", e.target.value)}
                       />
                     </div>
                     <div className="w-full">
@@ -174,7 +217,9 @@ const Cart = ({ location, getLocation }) => {
                         Phone
                       </label>
                       <input
-                        type="text"
+                        type="tel"
+                        value={address.phone}
+                        onChange={(e) => updateField("phone", e.target.value)}
                         className="w-full p-2 border border-black/20 rounded-md text-sm 
                         focus:ring-1 focus:ring-black outline-none"
                         placeholder="Phone"
@@ -183,6 +228,7 @@ const Cart = ({ location, getLocation }) => {
                   </div>
 
                   <button
+                    onClick={() => saveAddress()}
                     className="w-full bg-black text-white py-2 mt-6 rounded-md text-sm 
                   hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
                   >

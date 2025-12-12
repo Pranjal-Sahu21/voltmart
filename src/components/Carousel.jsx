@@ -141,7 +141,7 @@ const Carousel = () => {
 
                         {/* MOBILE BUTTON BELOW IMAGE */}
                         <div className="md:hidden mt-4">
-                          <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4">
+                          <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4" onClick={() => navigate(`/products/${item.id}`)}>
                             Shop Now
                           </button>
                         </div>

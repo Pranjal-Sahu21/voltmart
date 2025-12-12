@@ -1,6 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Contact = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    toast.success("Message sent successfully.");
+
+    setName("");
+    setEmail("");
+    setMessage("");
+  };
+
   return (
     <div className="min-h-screen bg-neutral-100 flex items-center justify-center px-4 py-14">
       <div
@@ -42,20 +69,20 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Divider Line */}
+          {/* Divider */}
           <div className="flex justify-center">
-            {/* Vertical on desktop, horizontal on mobile */}
             <div className="w-full md:w-px md:h-full bg-neutral-300 opacity-60 h-px"></div>
           </div>
 
           {/* Form */}
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-black mb-1">Your Name</label>
               <input
                 type="text"
                 placeholder="John Doe"
-                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-2 bg-white/50 backdrop-blur-md 
                 border border-neutral-300 rounded-md text-black 
                 placeholder-neutral-500 focus:ring-1 focus:ring-black outline-none"
@@ -67,7 +94,8 @@ const Contact = () => {
               <input
                 type="email"
                 placeholder="john@example.com"
-                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 bg-white/50 backdrop-blur-md 
                 border border-neutral-300 rounded-md text-black 
                 placeholder-neutral-500 focus:ring-1 focus:ring-black outline-none"
@@ -79,7 +107,8 @@ const Contact = () => {
               <textarea
                 rows="4"
                 placeholder="Type your message..."
-                required
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="w-full px-4 py-2 bg-white/50 backdrop-blur-md 
                 border border-neutral-300 rounded-md text-black 
                 placeholder-neutral-500 focus:ring-1 focus:ring-black outline-none"

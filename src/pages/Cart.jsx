@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuNotebookText } from "react-icons/lu";
@@ -13,7 +13,7 @@ import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
 
 const Cart = ({ location }) => {
-  const { cartItem, updateQuantity, deleteItem } = useCart();
+  const { cartItem, setCartItem, updateQuantity, deleteItem } = useCart();
   const navigate = useNavigate();
   const totalPrice = cartItem
     .reduce((total, item) => total + item.price * item.quantity, 0)
@@ -55,6 +55,17 @@ const Cart = ({ location }) => {
     setAddress({ ...address, [field]: value });
   };
 
+  const isFormValid = () => {
+    return (
+      address.fullName.trim() !== "" &&
+      address.street.trim() !== "" &&
+      address.state.trim() !== "" &&
+      address.pincode.trim() !== "" &&
+      address.country.trim() !== "" &&
+      address.phone.trim() !== ""
+    );
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -62,7 +73,7 @@ const Cart = ({ location }) => {
   return (
     <>
       <SignedOut>
-        <div className="min-h-screen flex flex-col items-center justify-center px-6 py-14 text-center bg-gradient-to-b from-gray-50 to-gray-100">
+        <div className="min-h-screen flex flex-col items-center justify-center px-6 py-14 text-center bg-linear-to-b from-gray-50 to-gray-100">
           {/* Animated Lottie Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -393,8 +404,18 @@ const Cart = ({ location }) => {
 
                     {/* Checkout Button */}
                     <button
-                      className="w-full bg-black text-white py-2 rounded-md mt-6 text-sm 
-      hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
+                      onClick={() => {
+                        if (!isFormValid()) {
+                          toast.error(
+                            "Please fill out all delivery details before checkout."
+                          );
+                          return;
+                        }
+
+                        navigate("/cart/checkout");
+                        
+                      }}
+                      className="w-full bg-black text-white py-2 rounded-md mt-6 text-sm hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
                     >
                       Proceed to Checkout
                     </button>

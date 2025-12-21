@@ -112,7 +112,6 @@ const Cart = ({ location }) => {
           </motion.div>
         </div>
       </SignedOut>
-      ;
       <SignedIn>
         <div className="min-h-screen bg-white px-4 py-10 flex justify-center">
           <div className="w-full max-w-5xl">

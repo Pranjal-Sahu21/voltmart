@@ -1,5 +1,5 @@
 import React from "react";
-import { useData } from "../context/DataContext";
+import { useProductsData } from "../context/DataContext";
 
 const FilterSection = ({
   search,
@@ -10,7 +10,7 @@ const FilterSection = ({
   setCategory,
   handleCategoryChange,
 }) => {
-  const { categoryOnlyData } = useData();
+  const { productCategories } = useProductsData();
 
   return (
     <div className="bg-gray-100 mt-1 p-4 rounded-xl border border-neutral-200 shadow-sm h-max w-full">
@@ -43,7 +43,7 @@ const FilterSection = ({
         </label>
 
         {/* OTHER CATEGORIES */}
-        {categoryOnlyData?.map((item, index) => (
+        {productCategories?.map((item, index) => (
           <label
             key={index}
             className="flex items-center gap-3 cursor-pointer group"

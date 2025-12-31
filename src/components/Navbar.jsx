@@ -6,17 +6,18 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import { MapPin, Menu, X } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../context/CartContext";
+import useLocation from "../hooks/useLocation";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [location, setLocation] = useState(null);
-
+  const location = useLocation();
   const { user } = useUser();
+  const { totalCartQuantity } = useCart();
 
   const links = [
     { path: "/", label: "Home" },
@@ -24,35 +25,6 @@ const Navbar = () => {
     { path: "/about", label: "About" },
     { path: "/contact", label: "Contact" },
   ];
-
-  const { cartItem } = useCart();
-
-  useEffect(() => {
-    const fetchLocation = async (lat, lon) => {
-      const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
-      try {
-        const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
-        );
-        const data = await res.json();
-        if (data && data.name && data.sys) {
-          setLocation({
-            city: data.name,
-            state: data.sys.country,
-          });
-        }
-      } catch (err) {
-        console.error("Failed to fetch location:", err);
-      }
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => fetchLocation(pos.coords.latitude, pos.coords.longitude),
-        (err) => console.error("Geolocation error:", err)
-      );
-    }
-  }, []);
 
   return (
     <>
@@ -108,7 +80,7 @@ const Navbar = () => {
             <Link to="/cart" className="relative">
               <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition mr-1" />
               <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
-                {cartItem.length}
+                {totalCartQuantity}
               </span>
             </Link>
 
@@ -126,7 +98,7 @@ const Navbar = () => {
             <Link to="/cart" className="relative">
               <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition" />
               <span className="absolute -top-2 -right-3 bg-black text-white text-xs px-1.5 py-0.5 rounded-full">
-                {cartItem.length}
+                {totalCartQuantity}
               </span>
             </Link>
 
@@ -171,7 +143,7 @@ const Navbar = () => {
               </div>
 
               {/* Auth */}
-              <div className="pt-4 border-t flex items-center gap-3">
+              <div className="-mt-8 flex items-center gap-3">
                 <SignedOut>
                   <SignInButton className="bg-black text-white w-full py-2 rounded-full text-sm hover:bg-gray-800 transition cursor-pointer" />
                 </SignedOut>

@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFilter } from "react-icons/fa6";
-import { useData } from "../context/DataContext";
+import { useProductsData } from "../context/DataContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -15,21 +15,25 @@ const MobileFilter = ({
   setCategory,
   handleCategoryChange,
 }) => {
-  const { categoryOnlyData } = useData();
+  const { productCategories } = useProductsData();
 
   return (
     <>
-      <div className="bg-gray-100 flex justify-between items-center lg:hidden -mt-6 p-2 rounded-md">
-        <h1 className="font-semibold text-xl">Filters</h1>
+      <div
+        className={`bg-gray-100 flex justify-between items-center lg:hidden -mt-6 p-3 ${
+          openFilter ? "rounded-tl-md rounded-tr-md" : "mb-4 rounded-md"
+        }`}
+      >
+        <h1 className="font-semibold text-lg">Filters</h1>
         {openFilter ? (
           <X
             onClick={() => setOpenFilter((prev) => !prev)}
-            className="text-black"
+            className="text-black text-lg"
           />
         ) : (
           <FaFilter
             onClick={() => setOpenFilter((prev) => !prev)}
-            className="text-gray-800"
+            className="text-gray-800 text-lg"
           />
         )}
       </div>
@@ -42,7 +46,9 @@ const MobileFilter = ({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="bg-gray-100 p-2 lg:hidden overflow-hidden"
+            className={`bg-gray-100 p-3 lg:hidden overflow-hidden mb-4 ${
+              openFilter ? "rounded-bl-md rounded-br-md" : ""
+            }`}
           >
             <input
               type="text"
@@ -75,7 +81,7 @@ const MobileFilter = ({
               </label>
 
               {/* OTHER CATEGORIES */}
-              {categoryOnlyData?.map((item, index) => (
+              {productCategories?.map((item, index) => (
                 <label
                   key={index}
                   className="flex items-center gap-3 cursor-pointer group"

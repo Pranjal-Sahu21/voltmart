@@ -1,7 +1,10 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-export const DataContext = createContext(null);
+export const DataContext = createContext({
+  products: [],
+  productCategories: [],
+});
 
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState([]);
@@ -9,7 +12,7 @@ export const DataProvider = ({ children }) => {
   const fetchAllProducts = async () => {
     try {
       const res = await axios.get("https://fakestoreapi.com/products");
-      setData(res.data); 
+      setData(res.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -20,14 +23,17 @@ export const DataProvider = ({ children }) => {
     return [...new Set(newVal)];
   };
 
-  const categoryOnlyData = getUniqueCategory(data);
+  const productCategories = getUniqueCategory(data);
 
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
 
   return (
-    <DataContext.Provider value={{ data, setData, fetchAllProducts, categoryOnlyData }}>
+    <DataContext.Provider value={{ products: data, productCategories }}>
       {children}
     </DataContext.Provider>
   );
 };
 
-export const useData = () => useContext(DataContext);
+export const useProductsData = () => useContext(DataContext);

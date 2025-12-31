@@ -1,50 +1,65 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export const CartContext = createContext(null);
+export const CartContext = createContext({
+  cartItem: [],
+  totalCartQuantity: 0,
+  addToCart: (product) => {},
+  removeFromCart: (productId) => {},
+  clearCart: () => {},
+  deleteItem: (productId) => {},
+});
 
 export const CartProvider = ({ children }) => {
-  const [cartItem, setCartItem] = useState([]);
-  const addToCart = (product) => {
-    const itemIncart = cartItem.find((item) => item.id === product.id);
-    if (itemIncart) {
-      const updatedCart = cartItem.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-      );
-      setCartItem(updatedCart);
-    } else {
-      setCartItem([...cartItem, { ...product, quantity: 1 }]);
-      toast.success("Product successfully added to cart.");
+  const [cartItem, setCartItem] = useState(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cartItem"));
+    return storedCart ?? [];
+  });
+
+  const totalCartQuantity = cartItem.reduce((acc, curr) => {
+    acc += curr.quantity;
+    return acc;
+  }, 0);
+
+  const clearCart = () => {
+    const confirmClear = window.confirm(
+      "Are you sure you want to clear your cart?"
+    );
+    if (confirmClear) {
+      setCartItem([]);
     }
   };
 
-  const updateQuantity = (cartItem, productId, action) => {
-    setCartItem(
-      cartItem
-        .map((item) => {
-          if (item.id === productId) {
-            let newUnit = item.quantity;
-            if (action === "increase") {
-              newUnit = newUnit + 1;
-            } else if (action === "decrease") {
-              if (newUnit == 1) {
-                const confirmDelete = window.confirm(
-                  "Are you sure you want to remove this product?"
-                );
-
-                if (confirmDelete) {
-                  setCartItem(cartItem.filter((item) => item.id !== productId));
-                  toast.success("Product removed.");
-                }
-              }
-              newUnit = newUnit - 1;
-            }
-            return newUnit > 0 ? { ...item, quantity: newUnit } : null;
-          }
-          return item;
-        })
-        .filter((item) => item != null)
+  const addToCart = (product) => {
+    const cartItems = structuredClone(cartItem);
+    const existingItemIndex = cartItems.findIndex(
+      (item) => item.id === product.id
     );
+    const existingItem = cartItems[existingItemIndex];
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+      cartItems.splice(existingItemIndex, 1, existingItem);
+      setCartItem(cartItems);
+    } else setCartItem((prev) => [...prev, { ...product, quantity: 1 }]);
+
+    toast.success("Product successfully added to cart.");
+  };
+
+  const removeFromCart = (productId) => {
+    const cartItems = structuredClone(cartItem);
+    const existingItemIndex = cartItems.findIndex(
+      (item) => item?.id === productId
+    );
+    const existingItem = cartItems[existingItemIndex];
+    // if quantity is 1 then remove it
+    if (existingItem.quantity === 1) deleteItem(productId);
+    // else, decrease quantity by 1
+    else {
+      existingItem.quantity -= 1;
+      cartItems.splice(existingItemIndex, 1, existingItem);
+      setCartItem(cartItems);
+    }
   };
 
   const deleteItem = (productId) => {
@@ -53,14 +68,30 @@ export const CartProvider = ({ children }) => {
     );
 
     if (confirmDelete) {
-      setCartItem(cartItem.filter((item) => item.id !== productId));
-      toast.success("Product removed.");
+      const cartItems = structuredClone(cartItem);
+      const existingItemIndex = cartItems.findIndex(
+        (item) => item.id === productId
+      );
+      cartItems.splice(existingItemIndex, 1);
+      setCartItem(cartItems);
+      toast.success("Product removed successfully.");
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem("cartItem", JSON.stringify(cartItem));
+  }, [cartItem]);
+
   return (
     <CartContext.Provider
-      value={{ cartItem, setCartItem, addToCart, updateQuantity, deleteItem }}
+      value={{
+        cartItem,
+        addToCart,
+        removeFromCart,
+        deleteItem,
+        clearCart,
+        totalCartQuantity,
+      }}
     >
       {children}
     </CartContext.Provider>

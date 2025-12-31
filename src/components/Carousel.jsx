@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useData } from "../context/DataContext";
+import { useProductsData } from "../context/DataContext";
 import ParallaxComponent from "./ParallaxComponent";
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const PrevArrow = ({ onClick }) => (
 );
 
 const Carousel = () => {
-  const { data, fetchAllProducts } = useData();
+  const { products } = useProductsData();
   const [randomItems, setRandomItems] = useState([]);
   const [showExtras, setShowExtras] = useState(false);
 
@@ -72,19 +72,15 @@ const Carousel = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchAllProducts();
-  }, []);
-
-  useEffect(() => {
-    if (data.length) {
-      const cleaned = data.filter((item) => isValidImage(item.image));
+    if (products.length) {
+      const cleaned = products.filter((item) => isValidImage(item.image));
       const shuffled = [...cleaned].sort(() => 0.5 - Math.random());
       setRandomItems(shuffled.slice(0, 7));
 
       const timer = setTimeout(() => setShowExtras(true), 500);
       return () => clearTimeout(timer);
     }
-  }, [data]);
+  }, [products]);
 
   const settings = {
     dots: dotsOnDesktop,
@@ -101,7 +97,7 @@ const Carousel = () => {
   };
 
   return (
-    <div className="w-full bg-gray-50">
+    <div className="w-full bg-white">
       <div className="w-full min-h-screen flex flex-col">
         <div className="grow">
           <div className="max-w-7xl mx-auto py-6 sm:py-10 h-full">
@@ -125,7 +121,10 @@ const Carousel = () => {
                         </p>
 
                         {/* DESKTOP BUTTON */}
-                        <button onClick={() => navigate(`/products/${item.id}`)} className="hidden md:inline-block bg-black text-white px-6 py-3 active:scale-95 rounded-full hover:bg-[#25241F] transition-all cursor-pointer">
+                        <button
+                          onClick={() => navigate(`/products/${item.id}`)}
+                          className="hidden md:inline-block bg-black text-white px-6 py-3 active:scale-95 rounded-full hover:bg-[#25241F] transition-all cursor-pointer"
+                        >
                           Shop Now
                         </button>
                       </div>
@@ -141,7 +140,10 @@ const Carousel = () => {
 
                         {/* MOBILE BUTTON BELOW IMAGE */}
                         <div className="md:hidden mt-4">
-                          <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4" onClick={() => navigate(`/products/${item.id}`)}>
+                          <button
+                            className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4"
+                            onClick={() => navigate(`/products/${item.id}`)}
+                          >
                             Shop Now
                           </button>
                         </div>

@@ -160,12 +160,13 @@ const Orders = () => {
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.25 }}
-                            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5"
+                            onClick={() => navigate(`/products/${item.id}`)}
+                            className="flex flex-col sm:flex-row items-start p-4 rounded-xl bg-gray-100 sm:items-center gap-4 sm:gap-5 cursor-pointer"
                           >
                             <img
                               src={item.image}
                               alt={item.title}
-                              className="w-14 h-14 sm:w-16 sm:h-16 object-contain bg-gray-100 rounded-lg p-2 flex-shrink-0"
+                              className="w-14 h-14 sm:w-16 sm:h-16 object-contain bg-gray-200 rounded-lg p-2 shrink-0 "
                             />
 
                             <div className="flex-1 space-y-1 min-w-0">
@@ -177,7 +178,7 @@ const Orders = () => {
                               </p>
                             </div>
 
-                            <p className="text-sm font-semibold flex-shrink-0">
+                            <p className="text-sm font-semibold shrink-0">
                               ${(item.price * item.quantity).toFixed(2)}
                             </p>
                           </motion.div>

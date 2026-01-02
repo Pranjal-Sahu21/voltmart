@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-neutral-100 py-10 px-4 sm:px-6 lg:px-20">
-      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-8 space-y-8 border border-neutral-200">
+    <div className="min-h-screen bg-white py-10 px-4 sm:px-6 lg:px-20">
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-md p-8 space-y-8 border border-gray-200">
         {/* Title */}
         <h1 className="text-4xl font-bold text-center text-black tracking-tight">
           About Us

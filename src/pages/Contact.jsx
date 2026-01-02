@@ -29,12 +29,12 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-100 flex items-center justify-center px-4 py-14">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-14">
       <div
         className="max-w-5xl w-full 
-        bg-white/40 backdrop-blur-xl 
-        border border-white/50 
-        rounded-3xl shadow-xl 
+        bg-white
+        border border-gray-200
+        rounded-3xl shadow-md 
         p-10"
       >
         {/* Title */}

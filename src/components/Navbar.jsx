@@ -172,20 +172,37 @@ const Navbar = () => {
               </div>
 
               {/* Links */}
-              {links.map(({ path, label }) => (
-                <NavLink
-                  key={path}
-                  to={path}
-                  onClick={() => setMobileOpen(false)}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-black font-semibold pb-1"
-                      : "text-gray-700 hover:text-black transition pb-1"
-                  }
-                >
-                  {label}
-                </NavLink>
-              ))}
+              <div className="flex flex-col gap-3 pb-5 border-b">
+                {links.map(({ path, label }) => (
+                  <NavLink
+                    key={path}
+                    to={path}
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-black font-semibold pb-1"
+                        : "text-gray-700 hover:text-black transition pb-1"
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                ))}
+              </div>
+              <SignedIn>
+                <div>
+                  <NavLink
+                    to="/orders"
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-black font-semibold pb-1"
+                        : "text-gray-700 hover:text-black transition pb-1"
+                    }
+                  >
+                    My Orders 📦
+                  </NavLink>
+                </div>
+              </SignedIn>
             </motion.div>
           </>
         )}

@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
         <div className="flex items-center justify-around bg-gray-100 border rounded-lg px-4 py-2 ">
           <button
             onClick={() => removeFromCart(product.id)}
-            className="text-lg text-gray-700 font-medium hover:opacity-60"
+            className="text-lg text-gray-700 font-medium hover:opacity-60 cursor-pointer"
           >
             −
           </button>
@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
 
           <button
             onClick={() => addToCart(product)}
-            className="text-lg text-gray-700 font-medium hover:opacity-60"
+            className="text-lg text-gray-700 font-medium hover:opacity-60 cursor-pointer"
           >
             +
           </button>

@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import useLocation from "../hooks/useLocation";
 
 const Cart = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useUser();
@@ -74,13 +76,44 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+
+    if(!user) {
+      toast.error("Please login to proceed checkout");
+      return;
+    }
+
     if (!isFormValid()) {
       toast.error("Please fill out all delivery details before checkout.");
       return;
     }
 
-    clearCart();
-    navigate("/cart/checkout");
+    setIsProcessing(true);
+
+    const newOrder = {
+      id: `ORD-${Date.now()}`,
+      date: new Date().toISOString(),
+      items: cartItem,
+      totalAmount: (
+        Number(totalPrice) +
+        totalPrice / 200 +
+        totalPrice * 0.06
+      ).toFixed(2),
+      address,
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    localStorage.setItem(
+      "orders",
+      JSON.stringify([newOrder, ...existingOrders])
+    );
+
+    sessionStorage.setItem("checkoutAccess", "true");
+
+    setTimeout(() => {
+      clearCart();
+      navigate("/checkout/success");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -395,12 +428,21 @@ const Cart = () => {
                 </div>
 
                 {/* Checkout Button */}
-                <button
-                  onClick={handleCheckout}
-                  className="w-full bg-black text-white py-2 rounded-md mt-6 text-sm hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
-                >
-                  Proceed to Checkout
-                </button>
+                {isProcessing ? (
+                  <div className="flex flex-col items-center justify-center py-10">
+                    <div className="loader mb-4" />
+                    <p className="text-sm text-gray-600">
+                      Processing your order...
+                    </p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-black text-white py-2 rounded-md mt-6 text-sm hover:bg-gray-900 cursor-pointer"
+                  >
+                    Proceed to Checkout
+                  </button>
+                )}
               </div>
             </div>
           </>

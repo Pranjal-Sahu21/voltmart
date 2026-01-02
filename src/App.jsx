@@ -8,7 +8,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SingleProduct from "./pages/SingleProduct";
 import NotFound from "./components/NotFound";
-import CheckOut from "./components/CheckOut";
+import Orders from "./components/Orders";
+import CheckoutSuccess from "./components/CheckoutSuccess";
 
 const App = () => {
   return (
@@ -21,7 +22,8 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/cart/checkout" element={<CheckOut />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/checkout/success" element={<CheckoutSuccess />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

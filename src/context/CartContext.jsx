@@ -22,12 +22,7 @@ export const CartProvider = ({ children }) => {
   }, 0);
 
   const clearCart = () => {
-    const confirmClear = window.confirm(
-      "Are you sure you want to clear your cart?"
-    );
-    if (confirmClear) {
-      setCartItem([]);
-    }
+    setCartItem([]);
   };
 
   const addToCart = (product) => {

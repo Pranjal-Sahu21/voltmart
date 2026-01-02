@@ -164,9 +164,7 @@ const Navbar = () => {
               {/* Location */}
               <div className="flex items-center gap-2 text-gray-600 text-sm border-b pb-4">
                 <MapPin size={16} />
-                {location
-                  ? `${location.city}, ${location.state}`
-                  : "Set location"}
+                {location?.formatted || "Set location"}
               </div>
 
               {/* Links */}

@@ -5,16 +5,28 @@ const useLocation = () => {
 
   useEffect(() => {
     const fetchLocation = async (lat, lon) => {
-      const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+      const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
+
       try {
         const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+          `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`
         );
         const data = await res.json();
-        if (data && data.name && data.sys) {
+
+        if (data?.results?.length > 0) {
+          const components = data.results[0].components;
+
           setLocation({
-            city: data.name,
-            state: data.sys.country,
+            city:
+              components.city ||
+              components.town ||
+              components.village ||
+              components.suburb ||
+              components.county ||
+              "",
+            state: components.state || "",
+            country: components.country || "",
+            formatted: data.results[0].formatted,
           });
         }
       } catch (err) {

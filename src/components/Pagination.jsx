@@ -1,4 +1,3 @@
-import React from "react";
 
 const getPages = (curr, total) => {
   const pages = [];
@@ -20,14 +19,14 @@ const getPages = (curr, total) => {
 
 const Pagination = ({ pageHandler, page, dynamicPage }) => {
   return (
-    <div className="flex items-center justify-center gap-4 mt-8">
+    <div className="flex items-center justify-center gap-2 mt-8">
       <button
         disabled={page === 1}
         onClick={() => pageHandler(page - 1)}
         className={`px-4 py-2 rounded-md text-white transition
       ${
         page === 1
-          ? "bg-gray-600 cursor-not-allowed"
+          ? "bg-gray-200 cursor-not-allowed text-gray-300!"
           : "bg-black hover:bg-gray-800 cursor-pointer active:scale-95"
       }
     `}
@@ -42,7 +41,9 @@ const Pagination = ({ pageHandler, page, dynamicPage }) => {
           disabled={p === "..."}
           className={`px-3 py-1 rounded-md text-sm transition
         ${
-          p === page ? "font-bold" : "text-gray-700 hover:bg-gray-200 cursor-pointer "
+          p === page
+            ? "font-bold"
+            : "text-gray-700 hover:bg-gray-200 cursor-pointer "
         }
       `}
         >
@@ -53,10 +54,10 @@ const Pagination = ({ pageHandler, page, dynamicPage }) => {
       <button
         disabled={page === dynamicPage}
         onClick={() => pageHandler(page + 1)}
-        className={`px-4 py-2 rounded-md text-white transition
+        className={`px-4 py-2 rounded-md transition text-white
       ${
         page === dynamicPage
-          ? "bg-gray-600 cursor-not-allowed"
+          ? "bg-gray-200 cursor-not-allowed text-gray-300!"
           : "bg-black hover:bg-gray-800 cursor-pointer active:scale-95"
       }
     `}

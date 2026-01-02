@@ -15,8 +15,14 @@ const Cart = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useUser();
-  const { cartItem, addToCart, removeFromCart, deleteItem, clearCart ,totalCartQuantity } =
-    useCart();
+  const {
+    cartItem,
+    addToCart,
+    removeFromCart,
+    deleteItem,
+    clearCart,
+    totalCartQuantity,
+  } = useCart();
   const [promoCode, setPromoCode] = useState("");
 
   const handleApplyPromo = () => {
@@ -31,7 +37,6 @@ const Cart = () => {
     .reduce((total, item) => total + item.price * item.quantity, 0)
     .toFixed(2);
 
-  // DELIVERY FORM (LOCAL STORAGE)
   const [address, setAddress] = useState({
     fullName: "",
     street: "",
@@ -61,6 +66,23 @@ const Cart = () => {
     );
   };
 
+  const handleClearCart = () => {
+    const isConfirm = confirm("Are you sure to clear the cart?");
+    if (isConfirm) {
+      clearCart();
+    }
+  };
+
+  const handleCheckout = () => {
+    if (!isFormValid()) {
+      toast.error("Please fill out all delivery details before checkout.");
+      return;
+    }
+
+    clearCart();
+    navigate("/cart/checkout");
+  };
+
   useEffect(() => {
     const saved = localStorage.getItem("deliveryAddress");
     if (saved) {
@@ -69,10 +91,19 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
+    if (!location && !user) return;
+
     setAddress((prev) => ({
       ...prev,
+
       fullName: prev.fullName || user?.fullName || "",
+
+      state: prev.state || location?.state || "",
       country: prev.country || location?.country || "",
+      street:
+        prev.street ||
+        location?.formatted?.split(",").slice(0, 2).join(", ") ||
+        "",
     }));
   }, [user, location]);
 
@@ -91,8 +122,13 @@ const Cart = () => {
                 My Cart{" "}
                 <span className="text-gray-500">({totalCartQuantity})</span>
               </h1>
-              <button onClick={clearCart} className="w-30 bg-black text-white py-2 -mt-1 my-6 rounded-md text-sm 
-                  hover:bg-gray-900 cursor-pointer active:scale-95 transition-all">Clear Cart</button>
+              <button
+                onClick={handleClearCart}
+                className="w-30 bg-black text-white py-2 -mt-1 my-6 rounded-md text-sm 
+                  hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
+              >
+                Clear Cart
+              </button>
             </div>
 
             {/* FULL-WIDTH CART ITEMS */}
@@ -360,16 +396,7 @@ const Cart = () => {
 
                 {/* Checkout Button */}
                 <button
-                  onClick={() => {
-                    if (!isFormValid()) {
-                      toast.error(
-                        "Please fill out all delivery details before checkout."
-                      );
-                      return;
-                    }
-
-                    navigate("/cart/checkout");
-                  }}
+                  onClick={handleCheckout}
                   className="w-full bg-black text-white py-2 rounded-md mt-6 text-sm hover:bg-gray-900 cursor-pointer active:scale-95 transition-all"
                 >
                   Proceed to Checkout

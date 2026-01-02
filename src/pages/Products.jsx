@@ -19,7 +19,6 @@ const Products = () => {
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
-    setPage(1);
     setOpenFilter(false);
   };
 
@@ -31,12 +30,19 @@ const Products = () => {
       item.price <= priceRange[1]
   );
 
+  const maxPage = Math.ceil(filteredProducts?.length / ITEMS_PER_PAGE) || 1;
+
+  const currentPage = Math.min(page, maxPage);
+
+  const paginatedProducts = filteredProducts?.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   const pageHandler = (selectedPage) => {
     setPage(selectedPage);
     window.scrollTo(0, 0);
   };
-
-  const dynamicPage = Math.ceil(filteredProducts?.length / ITEMS_PER_PAGE);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,6 +51,7 @@ const Products = () => {
   return (
     <div className="min-h-screen bg-white py-10">
       <div className="max-w-7xl mx-auto px-4">
+        {/* Mobile filter panel */}
         <MobileFilter
           openFilter={openFilter}
           setOpenFilter={setOpenFilter}
@@ -56,9 +63,11 @@ const Products = () => {
           setCategory={setCategory}
           handleCategoryChange={handleCategoryChange}
         />
+
         {products?.length > 0 ? (
           <>
             <div className="flex gap-10">
+              {/* Desktop filter */}
               <div className="w-64 shrink-0 hidden lg:block">
                 <FilterSection
                   search={search}
@@ -71,35 +80,30 @@ const Products = () => {
                 />
               </div>
 
-              {/* If no filtered products */}
+              {/* Product list */}
               {filteredProducts.length === 0 ? (
                 <div className="flex flex-col justify-center items-center md:h-[600px] md:w-[900px]">
-                  <Lottie animationData={notFound} classID="w-[500px]" />
+                  <Lottie animationData={notFound} className="w-[500px]" />
                   <p className="text-gray-600 text-lg mt-1 text-center px-4">
                     No products found.
                   </p>
                 </div>
               ) : (
                 <div className="grid xs:grid-cols-2 sm:grid-cols-3 gap-2 md:gap-7 w-full">
-                  {filteredProducts
-                    ?.slice(
-                      page * ITEMS_PER_PAGE - ITEMS_PER_PAGE,
-                      page * ITEMS_PER_PAGE
-                    )
-                    .map((product, index) => (
-                      <ProductCard key={index} product={product} />
-                    ))}
+                  {paginatedProducts.map((product, index) => (
+                    <ProductCard key={index} product={product} />
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Show pagination only if products exist */}
-            {filteredProducts.length > ITEMS_PER_PAGE && (
+            {/* Pagination */}
+            {filteredProducts.length > 0 && (
               <div className="flex justify-center mt-12">
                 <Pagination
                   pageHandler={pageHandler}
-                  page={page}
-                  dynamicPage={dynamicPage}
+                  page={currentPage}
+                  dynamicPage={maxPage}
                 />
               </div>
             )}

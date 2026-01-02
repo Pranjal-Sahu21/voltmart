@@ -3,6 +3,7 @@ import { FaFilter } from "react-icons/fa6";
 import { useProductsData } from "../context/DataContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import Slider from "rc-slider";
 
 const MobileFilter = ({
   openFilter,
@@ -106,20 +107,23 @@ const MobileFilter = ({
               Price Range
             </h1>
 
-            <div className="flex flex-col gap-3">
-              <label className="text-sm text-neutral-600 mt-4">
-                Price Range: ${priceRange[0]} — ${priceRange[1]}
-              </label>
+            <div className="mt-4">
+              <p className="text-sm text-neutral-600 mb-3">
+                ${priceRange[0]} — ${priceRange[1]}
+              </p>
 
-              <input
-                type="range"
-                min="0"
-                max="1000"
-                value={priceRange[1]}
-                onChange={(e) =>
-                  setPriceRange([priceRange[0], Number(e.target.value)])
-                }
-                className="w-full h-2 rounded-lg cursor-pointer bg-neutral-200 accent-black"
+              <Slider
+                range
+                min={0}
+                max={1000}
+                value={priceRange}
+                onChange={(value) => setPriceRange(value)}
+                trackStyle={[{ backgroundColor: "black" }]}
+                handleStyle={[
+                  { borderColor: "black" },
+                  { borderColor: "black" },
+                ]}
+                railStyle={{ backgroundColor: "#e5e7eb" }}
               />
             </div>
 

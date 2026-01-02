@@ -98,7 +98,7 @@ const Products = () => {
             </div>
 
             {/* Pagination */}
-            {filteredProducts.length > 0 && (
+            {filteredProducts.length > ITEMS_PER_PAGE && (
               <div className="flex justify-center mt-12">
                 <Pagination
                   pageHandler={pageHandler}

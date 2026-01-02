@@ -11,13 +11,14 @@ const SingleProduct = () => {
   const [singleProduct, setSingleProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const { addToCart } = useCart();
+
+  const { addToCart, removeFromCart, cartItem } = useCart();
 
   const getSingleProduct = async () => {
     try {
       const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
 
-      if (!res.data || res.data === null) {
+      if (!res.data) {
         setError(true);
       } else {
         setSingleProduct(res.data);
@@ -32,11 +33,9 @@ const SingleProduct = () => {
   useEffect(() => {
     getSingleProduct();
     window.scrollTo(0, 0);
-  }, []);
+  }, [id]);
 
-  // -------------------------
-  // LOADING STATE
-  // -------------------------
+  // Loading State
   if (loading) {
     return (
       <div className="flex flex-col justify-center items-center min-h-[60vh] text-gray-600 gap-4">
@@ -46,9 +45,7 @@ const SingleProduct = () => {
     );
   }
 
-  // -------------------------
-  // PRODUCT NOT FOUND STATE
-  // -------------------------
+  // Product not fiund state
   if (error || !singleProduct) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh]">
@@ -62,9 +59,9 @@ const SingleProduct = () => {
     );
   }
 
-  // -------------------------
-  // VALID PRODUCT STATE
-  // -------------------------
+  const cartProduct = cartItem.find((item) => item.id === singleProduct.id);
+
+//  Valid Product State
   return (
     <div className="px-4 pb-10 md:px-0 bg-white pt-10">
       <div className="max-w-6xl p-4 mx-auto md:p-10 bg-white rounded-2xl shadow-xl border border-gray-200">
@@ -87,15 +84,19 @@ const SingleProduct = () => {
             <h1 className="md:text-4xl text-2xl font-bold text-black leading-tight line-clamp-3">
               {singleProduct.title}
             </h1>
+
             <div className="text-gray-500 uppercase tracking-wide text-sm font-medium">
               {singleProduct.category}
             </div>
+
             <p className="text-2xl font-semibold text-black">
               ${singleProduct.price}
             </p>
+
             <p className="text-gray-700 leading-relaxed line-clamp-4">
               {singleProduct.description}
             </p>
+
             <div className="flex items-center gap-2">
               <span className="text-black text-xl">★</span>
               <span className="text-black font-semibold">
@@ -105,14 +106,38 @@ const SingleProduct = () => {
                 ({singleProduct.rating?.count} reviews)
               </span>
             </div>
+
+            {/* CART CONTROLS */}
             <div className="mt-4 flex justify-center md:justify-start">
-              <button
-                onClick={() => addToCart(singleProduct)}
-                className="flex gap-1 bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:bg-[#25241F] transition-all active:scale-95"
-              >
-                <IoCartOutline className="w-6 h-6" />
-                Add to Cart
-              </button>
+              {!cartProduct ? (
+                <button
+                  onClick={() => addToCart(singleProduct)}
+                  className="flex gap-1 bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:bg-[#25241F] transition-all active:scale-95"
+                >
+                  <IoCartOutline className="w-6 h-6" />
+                  Add to Cart
+                </button>
+              ) : (
+                <div className="flex items-center gap-4 border border-black rounded-md px-4 py-2">
+                  <button
+                    onClick={() => removeFromCart(singleProduct.id)}
+                    className="text-xl font-bold hover:opacity-60"
+                  >
+                    −
+                  </button>
+
+                  <span className="font-semibold text-lg">
+                    {cartProduct.quantity}
+                  </span>
+
+                  <button
+                    onClick={() => addToCart(singleProduct)}
+                    className="text-xl font-bold hover:opacity-60"
+                  >
+                    +
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

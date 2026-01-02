@@ -145,7 +145,7 @@ const Navbar = () => {
               {/* Auth */}
               <div className="-mt-8 flex items-center gap-3">
                 <SignedOut>
-                  <SignInButton className="bg-black text-white w-full py-2 rounded-full text-sm hover:bg-gray-800 transition cursor-pointer" />
+                  <SignInButton className="bg-black text-white w-[80%] py-2 rounded-full text-sm hover:bg-gray-800 transition cursor-pointer" />
                 </SignedOut>
 
                 <SignedIn>
@@ -164,7 +164,11 @@ const Navbar = () => {
               {/* Location */}
               <div className="flex items-center gap-2 text-gray-600 text-sm border-b pb-4">
                 <MapPin size={16} />
-                {location?.formatted || "Set location"}
+                <span>
+                  {location
+                    ? `${location.city}, ${location.state}`
+                    : "Set location"}
+                </span>
               </div>
 
               {/* Links */}

@@ -54,6 +54,7 @@ export const CartProvider = ({ children }) => {
       existingItem.quantity -= 1;
       cartItems.splice(existingItemIndex, 1, existingItem);
       setCartItem(cartItems);
+      toast.success("Product removed successfully.");
     }
   };
 

@@ -20,7 +20,7 @@ const isValidImage = (url) => {
 const NextArrow = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="flex absolute right-1 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow cursor-pointer"
+    className="flex absolute right-1 top-1/2 -translate-y-1/2 z-20 bg-gray-100 p-2 rounded-full shadow cursor-pointer"
   >
     <ChevronRight size={18} className="text-gray-700" />
   </div>
@@ -29,7 +29,7 @@ const NextArrow = ({ onClick }) => (
 const PrevArrow = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="flex absolute left-1 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow cursor-pointer"
+    className="flex absolute left-1 top-1/2 -translate-y-1/2 z-20 bg-gray-100 p-2 rounded-full shadow cursor-pointer"
   >
     <ChevronLeft size={18} className="text-gray-700" />
   </div>
@@ -97,7 +97,7 @@ const Carousel = () => {
   };
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white sm:pt-4 md:pt-16">
       <div className="w-full min-h-screen flex flex-col">
         <div className="grow">
           <div className="max-w-7xl mx-auto py-6 sm:py-10 h-full">

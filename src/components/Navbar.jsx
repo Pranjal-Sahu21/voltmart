@@ -57,8 +57,8 @@ const Navbar = () => {
                 to={path}
                 className={({ isActive }) =>
                   isActive
-                    ? "text-black font-semibold border-b-2 border-black pb-1"
-                    : "hover:text-black transition border-b-2 border-transparent pb-1"
+                    ? "text-gray-700 font-semibold border-b-2 border-black pb-1"
+                    : "hover:text-black text-gray-700 transition border-b-2 border-transparent pb-1"
                 }
               >
                 {label}
@@ -68,14 +68,18 @@ const Navbar = () => {
 
           {/* Right controls */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="flex items-center gap-1 text-gray-500 text-sm">
-              <MapPin size={16} />
-              <span>
-                {location
-                  ? `${location.city}, ${location.state}`
-                  : "Set location"}
-              </span>
-            </div>
+            <SignedIn>
+              <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-gray-700 font-semibold border-b-2 border-black pb-1 text-sm "
+                    : "hover:text-black font-medium text-gray-700 transition border-b-2 border-transparent pb-1 text-sm"
+                }
+              >
+                My orders
+              </NavLink>
+            </SignedIn>
 
             <Link to="/cart" className="relative">
               <IoCartOutline className="h-6 w-6 text-gray-700 hover:text-black transition mr-1" />

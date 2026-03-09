@@ -13,7 +13,7 @@ const Products = () => {
   const { products } = useProductsData();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 2500]);
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
 

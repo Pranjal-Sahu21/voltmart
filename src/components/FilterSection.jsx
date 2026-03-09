@@ -64,7 +64,7 @@ const FilterSection = ({
         <Slider
           range
           min={0}
-          max={1000}
+          max={2500}
           value={priceRange}
           onChange={(value) => setPriceRange(value)}
           trackStyle={[{ backgroundColor: "black" }]}
@@ -79,7 +79,7 @@ const FilterSection = ({
         onClick={() => {
           setSearch("");
           setCategory("");
-          setPriceRange([0, 1000]);
+          setPriceRange([0, 2500]);
         }}
       >
         Reset Filters

@@ -266,18 +266,19 @@ Tailwind CSS is integrated via the `@tailwindcss/vite` plugin for optimal perfor
 
 ## 📡 API Documentation
 
-### External APIs
+### DummiStore API
+Product data is fetched from my own API - **DummiStore API**.
 
-#### FakeStore API
-The application fetches product data from the FakeStore API.
+**Base URL:** `https://dummistore-wuga.onrender.com`
 
-**Base URL:** `https://fakestoreapi.com`
-
-**Endpoints Used:**
+**Endpoints**
 
 | Method | Endpoint | Purpose | Response |
-|--------|----------|---------|----------|
+|------|------|------|------|
+| `GET` | `/` | Check if the API server is running | Returns "Server is Live!" |
 | `GET` | `/products` | Fetch all products | Array of product objects |
+| `GET` | `/products/:id` | Fetch a single product by ID | Product object |
+| `GET` | `/products/category/:category` | Fetch products by category | Array of filtered products |
 
 **Product Schema:**
 ```json

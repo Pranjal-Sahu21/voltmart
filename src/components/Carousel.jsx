@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useProductsData } from "../context/DataContext";
 import ParallaxComponent from "./ParallaxComponent";
 import { useNavigate } from "react-router-dom";
+import { CarouselSkeleton } from "./CarouselSkeleton";
 
 const isValidImage = (url) => {
   if (!url) return false;
@@ -44,6 +45,8 @@ const Carousel = () => {
     if (typeof window === "undefined") return true;
     return window.innerWidth >= 768;
   });
+
+  const isLoading = products.length === 0;
 
   const resizeTimer = useRef(null);
 
@@ -100,59 +103,65 @@ const Carousel = () => {
     <div className="w-full bg-white sm:pt-4 md:pt-16">
       <div className="w-full min-h-screen flex flex-col">
         <div className="grow">
-          <div className="max-w-7xl mx-auto py-6 sm:py-10 h-full">
-            <Slider {...settings}>
-              {randomItems.map((item) => (
-                <div key={item.id} className="px-3 h-full">
-                  <div className="bg-white rounded-3xl shadow-sm overflow-hidden h-full flex">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center p-6 sm:p-10 w-full">
-                      {/* TEXT SECTION */}
-                      <div className="space-y-4 text-center md:text-left">
-                        <span className="text-xs font-medium text-gray-400 uppercase">
-                          {item.category}
-                        </span>
+          <div className="max-w-7xl mx-auto py-6 ">
+            {isLoading ? (
+              <div className="max-w-7xl mx-auto py-6 sm:py-10">
+                <CarouselSkeleton />
+              </div>
+            ) : (
+              <Slider {...settings}>
+                {randomItems.map((item) => (
+                  <div key={item.id} className="px-3 h-full">
+                    <div className="bg-white rounded-3xl shadow-sm overflow-hidden h-full flex">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center p-6 sm:p-10 w-full">
+                        {/* TEXT SECTION */}
+                        <div className="space-y-6 text-center md:text-left">
+                          <span className="text-xs font-medium text-gray-400 uppercase">
+                            {item.category}
+                          </span>
 
-                        <h1 className="text-2xl sm:text-4xl font-semibold text-gray-900 leading-snug line-clamp-2 mt-8">
-                          {item.title}
-                        </h1>
+                          <h1 className="text-2xl sm:text-4xl font-semibold text-gray-900 leading-snug line-clamp-2 mt-2">
+                            {item.title}
+                          </h1>
 
-                        <p className="text-gray-500 text-sm sm:text-base leading-snug line-clamp-2 mt-10">
-                          {item.description}
-                        </p>
+                          <p className="text-gray-500 text-sm sm:text-base leading-snug line-clamp-2 ">
+                            {item.description}
+                          </p>
 
-                        {/* DESKTOP BUTTON */}
-                        <button
-                          onClick={() => navigate(`/products/${item.id}`)}
-                          className="hidden md:inline-block bg-black text-white px-6 py-3 active:scale-95 rounded-full hover:bg-[#25241F] transition-all cursor-pointer"
-                        >
-                          Shop Now
-                        </button>
-                      </div>
-
-                      {/* IMAGE SECTION + MOBILE BUTTON */}
-                      <div className="flex flex-col justify-center items-center">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          onClick={() => navigate(`/products/${item.id}`)}
-                          className="max-h-[260px] sm:max-h-[340px] w-auto object-contain cursor-pointer transform hover:rotate-1 hover:scale-105 duration-300 drop-shadow-2xl"
-                        />
-
-                        {/* MOBILE BUTTON BELOW IMAGE */}
-                        <div className="md:hidden mt-4">
+                          {/* DESKTOP BUTTON */}
                           <button
-                            className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4"
                             onClick={() => navigate(`/products/${item.id}`)}
+                            className="hidden md:inline-block bg-black text-white px-6 py-3 active:scale-95 rounded-full hover:bg-[#25241F] transition-all cursor-pointer"
                           >
                             Shop Now
                           </button>
                         </div>
+
+                        {/* IMAGE SECTION + MOBILE BUTTON */}
+                        <div className="flex flex-col justify-center items-center">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            onClick={() => navigate(`/products/${item.id}`)}
+                            className="max-h-[260px] sm:max-h-[340px] w-auto object-contain cursor-pointer transform hover:rotate-1 hover:scale-105 duration-300 drop-shadow-2xl"
+                          />
+
+                          {/* MOBILE BUTTON BELOW IMAGE */}
+                          <div className="md:hidden mt-4">
+                            <button
+                              className="bg-black text-white px-6 py-3 rounded-full hover:bg-[#25241F] transition-all cursor-pointer mt-4"
+                              onClick={() => navigate(`/products/${item.id}`)}
+                            >
+                              Shop Now
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Slider>
+                ))}
+              </Slider>
+            )}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import Lottie from "lottie-react";
@@ -16,7 +16,7 @@ const SingleProduct = () => {
 
   const getSingleProduct = async () => {
     try {
-      const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
+      const res = await axios.get(`https://dummistore-wuga.onrender.com/products/${id}`);
 
       if (!res.data) {
         setError(true);

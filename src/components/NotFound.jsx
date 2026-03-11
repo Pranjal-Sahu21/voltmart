@@ -1,4 +1,3 @@
-import React from "react";
 import notFound from "../assets/PageNotFound.json";
 import Lottie from "lottie-react";
 import { Link } from "react-router-dom";

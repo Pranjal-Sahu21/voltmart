@@ -5,7 +5,7 @@ import notSignedIn from "../assets/Login.json";
 import Lottie from "lottie-react";
 import noOrders from "../assets/NoOrders.json";
 import { useNavigate } from "react-router-dom";
-import { SignedIn, SignedOut, SignInButton, useAuth } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);

@@ -1,4 +1,3 @@
-import React from "react";
 import { FaFilter } from "react-icons/fa6";
 import { useProductsData } from "../context/DataContext";
 import { motion, AnimatePresence } from "framer-motion";

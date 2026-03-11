@@ -1,4 +1,3 @@
-import React from "react";
 import { useProductsData } from "../context/DataContext";
 import Slider from "rc-slider";
 

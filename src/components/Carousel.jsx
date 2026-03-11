@@ -113,7 +113,7 @@ const Carousel = () => {
                 {randomItems.map((item) => (
                   <div key={item.id} className="px-3 h-full">
                     <div className="bg-white rounded-3xl shadow-sm overflow-hidden h-full flex">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center p-6 sm:p-10 w-full">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center p-6 sm:p-10 w-full h-full max-md:min-h-[80vh]">
                         {/* TEXT SECTION */}
                         <div className="space-y-6 text-center md:text-left">
                           <span className="text-xs font-medium text-gray-400 uppercase">
